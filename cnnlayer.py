@@ -1,6 +1,6 @@
 
 
-class cnnLayer:
+class CnnLayer:
 
     def __init__(self, dimension):
         msg(True)

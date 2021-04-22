@@ -1,7 +1,7 @@
 
 
 
-class dataAugmenter:
+class DataAugmenter:
 
     def __init__(self):
         msg(True)
