@@ -1,9 +1,10 @@
 
-
+from dataaugmenter import DataAugmenter
+from cnnlayer import CnnLayer
 
 def main():
     handshake()
-    dgan = dataAugmenter()
+    dgan = DataAugmenter()
     endshake()
 
 def handshake():

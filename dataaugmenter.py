@@ -1,14 +1,14 @@
-
+from cnnlayer import CnnLayer
 
 
 class DataAugmenter:
 
     def __init__(self):
-        msg(True)
-        l1 = cnnLayer()
-        msg(False)
+        self.startstop(True)
+        l1 = CnnLayer(1)
+        self.startstop(False)
     
-    def msg(self, bool_var: bool):
+    def startstop(self, bool_var: bool):
 
         if bool_var:
             print("+++INNITIALIZING DATA AUGMENTER+++")
