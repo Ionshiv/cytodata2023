@@ -3,10 +3,11 @@
 
 def main():
     handshake()
+    dgan = dataAugmenter()
     endshake()
 
 def handshake():
-    print("+++HELLO+++")
+    print("+++HELLO USER. INNITIALIZING SESSION+++")
 
 def endshake():
     print("+++ENDING SESSION+++")

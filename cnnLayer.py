@@ -1,6 +1,6 @@
 
 
-class cnn-layer:
+class cnnLayer:
 
     def __init__(self, dimension):
         msg(True)
@@ -11,5 +11,5 @@ class cnn-layer:
             print("+++DEFINING CNN LAYER+++")
         else:
             print("+++LAYER DEFINED+++")
-            
+
 

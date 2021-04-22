@@ -1,10 +1,12 @@
 
 
 
-class data-augmenter:
+class dataAugmenter:
 
     def __init__(self):
         msg(True)
+        l1 = cnnLayer()
+        msg(False)
     
     def msg(self, bool_var: bool):
 
