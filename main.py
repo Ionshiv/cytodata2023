@@ -1,10 +1,11 @@
 
 from dataaugmenter import DataAugmenter
-from cnnlayer import CnnLayer
+from cnnlive import CnnLive
 
 def main():
     handshake()
     dgan = DataAugmenter()
+    cnnl = CnnLive()
     endshake()
 
 def handshake():
