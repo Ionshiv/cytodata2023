@@ -1,6 +1,17 @@
+import numpy as np
+import tensorflow as tf
+import pandas as pd
+import IPython
+from PIL import Image
+from tensorflow import keras
+from tensorflow.keras import layers
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 
 
-class CnnLive:
+
+
+class LiveCnn:
 
     def __init__(self):
         self.startstop(True)

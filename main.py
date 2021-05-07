@@ -1,11 +1,11 @@
 
-from dataaugmenter import DataAugmenter
-from cnnlive import CnnLive
+from livegan import LiveGan
+from livecnn import LiveCnn
 
 def main():
     handshake()
-    dgan = DataAugmenter()
-    cnnl = CnnLive()
+    dgan = LiveGan()
+    cnnl = LiveCnn()
     endshake()
 
 def handshake():

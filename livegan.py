@@ -1,10 +1,11 @@
 
 
 
-class DataAugmenter:
+class LiveGan:
 
     def __init__(self):
         self.startstop(True)
+        print("not implemented yet")
         self.startstop(False)
     
     def startstop(self, bool_var: bool):
