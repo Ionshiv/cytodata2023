@@ -7,7 +7,7 @@ import ij.*;
 public class App 
 {
     public App(){
-        System.out.println( "+++INNITIATING TRACKING MACRO+++" );
+        System.out.println( "+++INNITIATING MACRO SPIRIT+++" );
 
 
     }
