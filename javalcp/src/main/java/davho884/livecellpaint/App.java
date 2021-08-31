@@ -6,8 +6,15 @@ package davho884.livecellpaint;
  */
 public class App 
 {
+    public App(){
+        System.out.println( "+++INNITIATING TRACKING MACRO+++" );
+        CmdMacro runMacro = new CmdMacro();
+        runMacro.endMsg();
+
+    }
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        App newRun = new App();
+
     }
 }
