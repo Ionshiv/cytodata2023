@@ -8,8 +8,10 @@ import java.lang.reflect.Array;
 //This macro generates hyper-stacks from the image series, then saves them as hyper-tiffs
 
 public class StackMacro {
+    ImageJ ij;
 
-    public StackMacro(){
+    public StackMacro(ImageJ ij2){
+        ij = ij2;
 
     }
 
@@ -22,6 +24,11 @@ public class StackMacro {
         return;
 
     }
+
+    public void subStacking(){
+        //Splits the TIF hyperstack into substacks by channel
+    }
+
     public void saveStack(){
         //saves Hyperstacks
         return;
