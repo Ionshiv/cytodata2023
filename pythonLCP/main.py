@@ -9,7 +9,7 @@ def main():
     endshake()
 
 def handshake():
-    print("+++HELLO USER. INNITIALIZING SESSION+++")
+    print("+++INNITIALIZING SESSION+++")
 
 def endshake():
     print("+++ENDING SESSION+++")
