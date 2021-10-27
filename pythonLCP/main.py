@@ -1,11 +1,8 @@
 
-from livegan import LiveGan
-from livecnn import LiveCnn
+
 
 def main():
     handshake()
-    dgan = LiveGan()
-    cnnl = LiveCnn()
     endshake()
 
 def handshake():

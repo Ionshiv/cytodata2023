@@ -1,7 +1,7 @@
 
 
 
-class LiveGan:
+class LcpGan:
 
     def __init__(self):
         self.startstop(True)

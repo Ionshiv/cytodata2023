@@ -11,7 +11,7 @@ from sklearn.metrics import confusion_matrix
 
 
 
-class LiveCnn:
+class LcpCnn:
 
     def __init__(self):
         self.startstop(True)
