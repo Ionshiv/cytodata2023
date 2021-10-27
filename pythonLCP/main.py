@@ -1,8 +1,8 @@
-
-
+from lcpvae import LcpVae
 
 def main():
     handshake()
+    vae = LcpVae()
     endshake()
 
 def handshake():
