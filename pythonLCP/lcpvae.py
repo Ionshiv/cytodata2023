@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import sklearn as sk
 import pandas as pd
 import skimage as ski
+import PIL as pil
 from tensorflow import keras
 from keras import layers
 from keras.models import Model
@@ -36,11 +37,11 @@ class LcpVae:
         encoder = layers.Conv2D(padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
         encoder = layers.Conv2D(padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
         encoder = layers.MaxPool2D(pool_size=(2,2), strides=2)(encoder)
-        encoder = layers.Conv2D(padding=same, kernel_size=(3,3), activation='relu')(encoder)
-        encoder = layers.Conv2D(padding=same, kernel_size=(3,3), activation='relu')(encoder)
+        encoder = layers.Conv2D(padding='same', kernel_size=(3,3), activation='relu')(encoder)
+        encoder = layers.Conv2D(padding='same', kernel_size=(3,3), activation='relu')(encoder)
         encoder = layers.MaxPool2D(pool_size=(2,2), strides=2)(encoder)
-        encoder = layers.Conv2D(padding=same, kernel_size=(3,3), activation='relu')(encoder)
-        encoder = layers.Conv2D(padding=same, kernel_size=(3,3), activation='relu')(encoder)
+        encoder = layers.Conv2D(padding='same', kernel_size=(3,3), activation='relu')(encoder)
+        encoder = layers.Conv2D(padding='same', kernel_size=(3,3), activation='relu')(encoder)
 
         transcoder = layers.Flatten()(encoder)
         transcoder = Dense(100, activation='softmax')(transcoder)
