@@ -14,9 +14,14 @@ class Stacker:
         inpath_exp147 = '/home/jovyan/workspace/ki-database/exp147/t1/Images/'
         inpath_exp147t0 = '/home/jovyan/workspace/ki-database/exp147/t0/Images/'
         inpath_exp143 = '/home/jovyan/workspace/ki-database/exp143/Images/'
+        inpath_exp156 = '/home/jovyan/workspace/ki-database/exp156/Images/'
+        inpath_exp180 = '/home/jovyan/workspace/ki-database/exp180/Images/'
+        inpath_exp183 = '/home/jovyan/workspace/ki-database/exp183/Images/'
 
         outpath_exp147 = '/home/jovyan/scratch-shared/david/data/ki-database/exp147/'
         outpath_exp143 = '/home/jovyan/scratch-shared/david/data/ki-database/exp143/'
+        outpath_exp156 = '/home/jovyan/scratch-shared/david/data/ki-database/exp156/'
+        outpath_exp180 = '/home/jovyan/scratch-shared/david/data/ki-database/exp180/'
 
         #exp 147 r_17-18s1 c3-25s2 ch6
         # for i in range(17, 19):
@@ -27,7 +32,7 @@ class Stacker:
         #             else:
         #                 colstr = str(j) 
         #             dataStack =  Stacker.makestack(inpath_exp147 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
-        #             Stacker.saveim(outpath_exp147 + 'r' + str(i) + 'c' + colstr + 'f01p01', 'sk' + str(k), dataStack)
+        #             Stacker.saveim(outpath_exp147 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + str(k), dataStack)
         # for i in range(17, 19):
         #     for j in range(3, 27, 2):
         #         if j < 10:
@@ -35,24 +40,55 @@ class Stacker:
         #         else:
         #             colstr = str(j) 
         #         dataStack =  Stacker.makestack(inpath_exp147t0 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk1fk1fl1.tiff', 6 )
-        #         Stacker.saveim(outpath_exp147 + 'r' + str(i) + 'c' + colstr + 'f01p01', 'sk1', dataStack)
+        #         Stacker.saveim(outpath_exp147 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk1', dataStack)
         
-        #exp 143 r7-28s1 c3-24s1 ch6
-        for i in range(5, 29):
-            if i < 10:
-                rowstr = '0' + str(i)
-            else:
-                rowstr = str(i)
-            for j in range(3, 25, 4):
-                for j2 in range (2):
-                    for k in range(1, 20):
-                        if j < 10:
-                            colstr = '0'+str(j+j2)
-                        else:
-                            colstr = str(j+j2) 
-                        dataStack =  Stacker.makestack(inpath_exp143 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
-                        Stacker.saveim(outpath_exp143 + 'r' + str(i) + 'c' + str(j+j2) + 'f01p01', 'sk' + str(k), dataStack)
+        # #exp 143 r7-28s1 c3-24s1 ch6
+        # for i in range(5, 29):
+        #     if i < 10:
+        #         rowstr = '0' + str(i)
+        #     else:
+        #         rowstr = str(i)
+        #     for j in range(3, 25, 4):
+        #         for j2 in range (2):
+        #             for k in range(1, 20):
+        #                 if j < 10:
+        #                     colstr = '0'+str(j+j2)
+        #                 else:
+        #                     colstr = str(j+j2) 
+        #                 dataStack =  Stacker.makestack(inpath_exp143 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
+        #                 Stacker.saveim(outpath_exp143 + 'r' + str(i) + 'c' + str(j+j2) + 'f01p01', 'sk' + str(k), dataStack)
+        
+        #exp 156 r3-46s1 c3-30s1 ch5
+        for i in range(3, 47):
+            for j in range(3, 31):
+                for k in range(1, 15):
+                    if j < 10:
+                        colstr = '0'+str(j)
+                    else:
+                        colstr = str(j) 
+                    dataStack =  Stacker.makestack(inpath_exp156 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 5 )
+                    Stacker.saveim(outpath_exp156 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + str(k), dataStack)
 
+        
+        #exp 180/3 r3-46s1 c3-30s1 ch6
+        for i in range(17, 19):
+            for j in range(3, 27, 2):
+                for k in range(2, 25):
+                    if j < 10:
+                        colstr = '0'+str(j)
+                    else:
+                        colstr = str(j) 
+                    dataStack =  Stacker.makestack(inpath_exp180 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
+                    Stacker.saveim(outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + str(k), dataStack)
+        for i in range(3, 47):
+            for j in range(3, 31):
+                for k in range(1, 3):
+                    if j < 10:
+                        colstr = '0'+str(j)
+                    else:
+                        colstr = str(j) 
+                    dataStack =  Stacker.makestack(inpath_exp183 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
+                    Stacker.saveim(outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk'+ str(k+22), dataStack)
 
     def loadim(inpath: str):
         print('+++ LOADING DATA +++')
@@ -92,6 +128,8 @@ class Stacker:
         elif channels == 5:
             print('+++ 5 channels +++')
             data0 = Stacker.loadim(inpath + str(1) + timestr)
+            print(inpath + str(1) + timestr) 
+            print(type(data0))
             data1 = Stacker.loadim(inpath + str(2) + timestr)
             data2 = Stacker.loadim(inpath + str(3) + timestr)
             data3 = Stacker.loadim(inpath + str(4) + timestr)
