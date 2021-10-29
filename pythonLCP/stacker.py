@@ -40,7 +40,7 @@ class Stacker:
                 else:
                     colstr = str(j) 
                 dataStack =  Stacker.makestack(inpath_exp147t0 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk1fk1fl1.tiff', 6 )
-                Stacker.saveim(outpath_exp147 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk1', dataStack)
+                Stacker.saveim(outpath_exp147 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk0', dataStack)
         
         #exp 143 r7-28s1 c3-24s1 ch6
         for i in range(5, 29):
@@ -56,7 +56,7 @@ class Stacker:
                         else:
                             colstr = str(j+j2) 
                         dataStack =  Stacker.makestack(inpath_exp143 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
-                        Stacker.saveim(outpath_exp143 + 'r' + str(i) + 'c' + str(j+j2) + 'f01p01', 'sk' + str(k), dataStack)
+                        Stacker.saveim(outpath_exp143 + 'r' + str(i) + 'c' + str(j+j2) + 'f01p01', 'sk' + str(k-1), dataStack)
         
         #exp 156 r3-46s1 c3-30s1 ch5
         for i in range(3, 47):
@@ -71,7 +71,7 @@ class Stacker:
                     else:
                         colstr = str(j) 
                     dataStack =  Stacker.makestack(inpath_exp156 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 5 )
-                    Stacker.saveim(outpath_exp156 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + str(k), dataStack)
+                    Stacker.saveim(outpath_exp156 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + str(k-1), dataStack)
 
         
         #exp 180/3 r3-46s1 c3-30s1 ch6
@@ -87,7 +87,7 @@ class Stacker:
                     else:
                         colstr = str(j) 
                     dataStack =  Stacker.makestack(inpath_exp180 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
-                    Stacker.saveim(outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + str(k), dataStack)
+                    Stacker.saveim(outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + str(k-1), dataStack)
         for i in range(3, 47):
             if i < 10:
                 rowstr = '0' + str(i)
@@ -100,7 +100,7 @@ class Stacker:
                     else:
                         colstr = str(j) 
                     dataStack =  Stacker.makestack(inpath_exp183 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
-                    Stacker.saveim(outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk'+ str(k+22), dataStack)
+                    Stacker.saveim(outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk'+ str(k+22-1), dataStack)
 
     def loadim(inpath: str):
         print('+++ LOADING DATA +++')
@@ -131,11 +131,11 @@ class Stacker:
             data5 = Stacker.loadim(inpath + str(6) + timestr)
             dataStack = np.zeros((data0.shape[0], data0.shape[1], 6))
             dataStack[:,:,0] = data0
-            dataStack[:,:,0] = data1
-            dataStack[:,:,0] = data2
-            dataStack[:,:,0] = data3
-            dataStack[:,:,0] = data4
-            dataStack[:,:,0] = data5
+            dataStack[:,:,1] = data1
+            dataStack[:,:,2] = data2
+            dataStack[:,:,3] = data3
+            dataStack[:,:,4] = data4
+            dataStack[:,:,5] = data5
 
         elif channels == 5:
             print('+++ 5 channels +++')
@@ -146,12 +146,12 @@ class Stacker:
             data2 = Stacker.loadim(inpath + str(3) + timestr)
             data3 = Stacker.loadim(inpath + str(4) + timestr)
             data4 = Stacker.loadim(inpath + str(5) + timestr)
-            dataStack = np.zeros((data0.shape(0), data0.shape(1), 5))
+            dataStack = np.zeros((data0.shape[0], data0.shape[1], 5))
             dataStack[:,:,0] = data0
-            dataStack[:,:,0] = data1
-            dataStack[:,:,0] = data2
-            dataStack[:,:,0] = data3
-            dataStack[:,:,0] = data4
+            dataStack[:,:,1] = data1
+            dataStack[:,:,2] = data2
+            dataStack[:,:,3] = data3
+            dataStack[:,:,4] = data4
 
         else:
             print('+++FEATURE NOT SUPPORTED+++')
