@@ -70,7 +70,7 @@ class Stacker:
                         colstr = '0'+str(j)
                     else:
                         colstr = str(j) 
-                    dataStack =  Stacker.makestack(inpath_exp156 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 5 )
+                    dataStack =  Stacker.makestack(inpath_exp156 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 5 )
                     Stacker.saveim(outpath_exp156 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + str(k), dataStack)
 
         
@@ -86,7 +86,7 @@ class Stacker:
                         colstr = '0'+str(j)
                     else:
                         colstr = str(j) 
-                    dataStack =  Stacker.makestack(inpath_exp180 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
+                    dataStack =  Stacker.makestack(inpath_exp180 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
                     Stacker.saveim(outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + str(k), dataStack)
         for i in range(3, 47):
             if i < 10:
@@ -99,7 +99,7 @@ class Stacker:
                         colstr = '0'+str(j)
                     else:
                         colstr = str(j) 
-                    dataStack =  Stacker.makestack(inpath_exp183 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
+                    dataStack =  Stacker.makestack(inpath_exp183 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
                     Stacker.saveim(outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk'+ str(k+22), dataStack)
 
     def loadim(inpath: str):
