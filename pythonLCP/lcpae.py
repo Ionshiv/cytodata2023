@@ -17,8 +17,8 @@ class LcpAe:
     def __init__(self):
         self.startstop(True)
         print("not implemented yet")
-        # self.testLayers()
-        self.autoencoder()
+        self.testLayers()
+        # self.autoencoder()
         self.startstop(False)
     
     def startstop(self, bool_var: bool):
@@ -32,8 +32,11 @@ class LcpAe:
         # encoder = layers.sequential()
         # decoder = layers.sequential()
 
+        tingress = layers.Input((24, 1080, 1080, 6))
 
-        ingress = layers.Input((24, 1080, 1080, 6))
+
+        # ingress = layers.Input((24, 1080, 1080, 6))
+        ingress = layers.Conv2D(filters=6, padding='same', kernel_size=(1,1), activation='none')
         encoder = layers.Conv2D(filters=6, padding = 'same', kernel_size=(3,3), activation='relu')(ingress)
         encoder = layers.Conv2D(filters=6, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
         encoderDown0 = layers.MaxPool2D(pool_size=(2, 2), strides=2)(encoder)
@@ -111,27 +114,23 @@ class LcpAe:
         encoderDown6 = layers.Flatten()(encoder)
         num_el = encoderDown6.shape[1]
         print('Encoder layer 6 shape: ', encoder.shape)
-        
-        # transcoder = layers.Dense(encoderDown6.shape[1], activation='relu')(encoderDown6)
-        # print('transcoder in shape: ',transcoder.shape)
-        # transcoder = layers.Dense(500, activation='relu')(transcoder)
-        # transcoder = layers.Dense(100, activation='relu')(transcoder)
-        # transcoder = layers.Dense(20, activation='relu')(transcoder)
-        # print('transcoder bottleneck shape: ',transcoder.shape)
-        # transcoder = layers.Dense(100, activation='relu')(transcoder)
-        # transcoder = layers.Dense(500, activation='relu')(transcoder)
-        # transcoder = layers.Dense(num_el, activation='relu')(transcoder)
 
-        bottleneck = layers.GRU(num_el, activation='relu')(encoderDown6)
-        bottleneck = layers.GRU(500, activation='relu')(bottleneck)
-        bottleneck = layers.GRU(100, activation='relu')(bottleneck)
-        bottleneck = layers.GRU(20, activation='relu')(bottleneck)
-        bottleneck = layers.GRU(100, activation='relu')(bottleneck)
-        bottleneck = layers.GRU(500, activation='relu')(bottleneck)
+        # cIngress = layers.Input(encoderDown6.shape[1])
+        cIngress = layers.GRU(num_el, activation='relu')
+        compressor = layers.GRU(500, activation='relu')(cIngress)
+        compressor = layers.GRU(100, activation='relu')(compressor)
+        latentLayer = layers.GRU(20, activation='relu')(compressor)
+        print('Latent vector space: ', latentLayer.shape)
 
-        print('transcoder out shape: ',bottleneck.shape)
-        
-        decoderUp0 = layers.Reshape((encoder.shape[1], encoder.shape[2], encoder.shape[3]))(bottleneck)
+
+        # eIngress = layers.Input(latentLayer.shape[1])
+        eIngress = layers.GRU(100, activation='relu')
+        eEgress = layers.GRU(500, activation='relu')(eIngress)
+        print('Expander out shape: ',eEgress.shape)
+
+
+        dIngress = layers.Input((encoder.shape[1], encoder.shape[2], encoder.shape[3]))
+        decoderUp0 = layers.Reshape((encoder.shape[1], encoder.shape[2], encoder.shape[3]))(dIngress)
         decoder = layers.Conv2DTranspose(filters=42, kernel_size=(3,3), padding='same', activation='relu')(decoderUp0)
         decoder = layers.Conv2DTranspose(filters=42, kernel_size=(3,3), padding='same', activation='relu')(decoder)
         decoder = layers.Conv2DTranspose(filters=42, kernel_size=(3,3), padding='same', activation='relu')(decoder)
@@ -209,29 +208,83 @@ class LcpAe:
         egress = layers.Conv2D(filters=6, kernel_size=(3,3), strides=(1,1), padding='same', activation='sigmoid')(decoder)
         print('Decoder layer 6 shape: ', decoder.shape)
         print('Egress layer shape: ', egress.shape)
+
+
+        encoderSegment = Model(inputs=ingress, outputs=encoderDown6)
+        compressorSegment = Model(inputs=cIngress, outputs=latentLayer)
+        expanderSegment = Model(inputs=eIngress, outputs=eEgress)
+        decoderSegment = Model(inputs=dIngress, outputs=egress)
+        
+        rEncoder = layers.TimeDistributed(encoderSegment)(compressorSegment)
+        rDecoder = layers.TimeDistributed(expanderSegment)(decoderSegment)
+
+
+
+
         print("soon(TM)")
 
     def testLayers(self):
 
-        tin = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-        print(tin)
-        print(tin.shape[0])
-        print(tin.shape[1])
-        x = layers.Input((tin.shape[0], tin.shape[1], 1))
+        # tin = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        # print(tin)
+        # print(tin.shape[0])
+        # print(tin.shape[1])
+        # x = layers.Input((tin.shape[0], tin.shape[1], 1))
         
-        print(x)
+        # print(x)
         # x = layers.UpSampling2D(size=(2,2))(x)
         # print(x)
         # x = layers.MaxPool2D(pool_size=(2, 2), strides=2)(x)
         # print(x)
-        x = layers.Conv2DTranspose(filters=3, strides=(3,3), padding='same', kernel_size=(3,3), activation='relu')(x)
-        print(x)
+        # x = layers.Conv2DTranspose(filters=3, strides=(3,3), padding='same', kernel_size=(3,3), activation='relu')(x)
+        # print(x)
         # x = layers.Conv2DTranspose(filters=3, strides=(1,1), padding='same', kernel_size=(3,3), activation='relu')(x)
-        x = layers.Conv2D(filters=3, kernel_size=(3,3), strides=(1,1), padding='same', activation='relu' )(x)
-        print(x)
+        # x = layers.Conv2D(filters=3, kernel_size=(3,3), strides=(1,1), padding='same', activation='relu' )(x)
+        # print(x)
         # x = layers.MaxPool2D(pool_size=(2,2), strides=(2, 2))(x)
         # print(x.shape)
         # print(x)
+
+
+        #testing time arrays
+        tin = np.zeros((9, 6, 6))
+        print(tin.shape)
+        print(tin[0])
+        for i in range(9):
+            # tin[i, :, :] = np.array([[i, i, i], [i, 0, i], [i, i, i]])
+            tin[i, :, :] = np.array([[i, i, i, i, i, i],[i, 0, 0, 0, 0, i],[i, 0, i, i, 0, i],[i,0,i,i,0,i],[i,0,0,0,0,i],[i,i,i,i,i,i]])
+            print('test')
+            print(tin[i])
+        # x = layers.Conv2D(3, kernel_size=(1,1), padding='same', activation=None)
+        x = xin = layers.Input((6, 6, 1))
+        x = layers.Conv2D(3, kernel_size=(3,3), padding='same', activation='relu')(x)
+        x = layers.MaxPool2D(pool_size=(2,2), strides=(2,2))(x)
+        x = xout = layers.Flatten()(x)
+
+        y = yin = layers.Input((9, x.shape[1]))
+        y = layers.GRU(y.shape[1], return_sequences=True)(y)
+        y = layers.GRU(3, return_sequences=True)(y)
+        y = yout = layers.GRU(x.shape[1], return_state=False)(y)
+        print(yout[0])
+
+        z = zin = layers.Input(yout.shape[1])
+        z = layers.Reshape((3, 3, 3))(z)
+        z = layers.Conv2DTranspose(3,  kernel_size=(2,2), strides=(2,2), padding='same', activation='relu')(z)
+        z = zout = layers.Conv2DTranspose(3, kernel_size=(3, 3), padding='same', activation='relu')(z)
+
+
+        xmodel = Model(inputs=xin, outputs=xout)
+        ymodel = Model(yin, yout)
+        zmodel = Model(zin, zout)
+
+        rin = layers.Input((9, 6, 6, 1))
+
+        rx_wrapper = layers.TimeDistributed(xmodel)(rin)
+        rxmodel = ymodel(rx_wrapper)
+        ry_wrapper= layers.TimeDistributed(zmodel)(rxmodel)
+
+
+
 
         
   
