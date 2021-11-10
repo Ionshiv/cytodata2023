@@ -181,36 +181,55 @@ class LcpAe:
         for i in range(9):
             # tin[i, :, :] = np.array([[i, i, i], [i, 0, i], [i, i, i]])
             tin[i, :, :] = np.array([[i, i, i, i, i, i],[i, 0, 0, 0, 0, i],[i, 0, i, i, 0, i],[i,0,i,i,0,i],[i,0,0,0,0,i],[i,i,i,i,i,i]])
-            print('test')
-            print(tin[i])
+            # print('test')
+            # print(tin[i])
         # x = layers.Conv2D(3, kernel_size=(1,1), padding='same', activation=None)
         x = xin = layers.Input((6, 6, 1))
         x = layers.Conv2D(3, kernel_size=(3,3), padding='same', activation='relu')(x)
         x = layers.MaxPool2D(pool_size=(2,2), strides=(2,2))(x)
         x = xout = layers.Flatten()(x)
+        xmodel = Model(xin, xout)
+        rxin = layers.Input((9,6,6,1))
+        rx = layers.TimeDistributed(xmodel)(rxin)
 
-        y = yin = layers.Input((9, x.shape[1]))
-        y = layers.GRU(y.shape[1], return_sequences=True)(y)
-        y = layers.GRU(3, return_sequences=True)(y)
-        y = yout = layers.GRU(x.shape[1], return_state=False)(y)
-        print(yout[0])
 
-        z = zin = layers.Input(yout.shape[1])
+
+        # y = yin = layers.Input((9, x.shape[1]))
+        y = yin = layers.GRU(rx.shape[1], return_sequences=True)(rx)
+        y = latent_layer = layers.GRU(3, return_sequences=True)(y)
+        y = yout = layers.GRU(x.shape[1], return_sequences=True)(y)
+        print('RNN segment out: ', yout.shape)
+
+        z = zin = layers.Input(yout.shape[2])
+        print("zin: ", zin.shape)
         z = layers.Reshape((3, 3, 3))(z)
         z = layers.Conv2DTranspose(3,  kernel_size=(2,2), strides=(2,2), padding='same', activation='relu')(z)
         z = zout = layers.Conv2DTranspose(3, kernel_size=(3, 3), padding='same', activation='relu')(z)
 
 
-        xmodel = Model(inputs=xin, outputs=xout)
-        ymodel = Model(yin, yout)
+        # xmodel = Model(inputs=xin, outputs=xout)
+        # ymodel = Model(yin, yout)
+        # print('ymodel type: ', type(ymodel) )
         zmodel = Model(zin, zout)
 
-        rin = layers.Input((9, 6, 6, 1))
+        # rxin = layers.Input((9, 6, 6, 1))
+        rzin = layers.Input((9, 27, 1))
+        rz = layers.TimeDistributed(zmodel)(rzin)
 
-        rx_wrapper = layers.TimeDistributed(xmodel)(rin)
-        rxmodel = ymodel(rx_wrapper)
-        ry_wrapper= layers.TimeDistributed(zmodel)(rxmodel)
+        Autoencoder = Model(rxin, rz)
 
+        # rx_wrapper = layers.TimeDistributed(xmodel)(rxin)
+        # print('rx_wrapper: ', type(rx_wrapper))
+        # ryx_layer = ymodel(rx_wrapper)
+        # print('ryx_layer: ', type(ryx_layer))
+        # ryxmodel = Model(rxin, ryx_layer)
+        # rz_wrapper= layers.TimeDistributed(zmodel)(rzin)
+        # print('ry_wrapper: ', type(rz_wrapper))
+        # # rzx_layer = ryxmodel(rz_wrapper)
+        # rzyxmodel = Model(xin, rz_wrapper)
+        # # rzxmodel = Model(rxin, rz_wrapper)
+        # # rzxmodel = ry_wrapper(rxmodel)
+        # print('rzyxmodel: ', rzyxmodel.shape)
 
 
 
