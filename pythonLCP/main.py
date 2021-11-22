@@ -6,8 +6,10 @@ import cv2 as cv2
 
 def main():
     handshake();
-    runAutoencoder();
-    # runStacker();
+    # runAutoencoder();
+    runStacker();
+    # lcpGen = LcpGenerator('/scratch-shared/david/data/ki-database/exp147');
+    # lcpGen.simpleTGen();
     endshake();
 
 def handshake():
@@ -22,7 +24,8 @@ def runStacker():
 
 def runAutoencoder():
     
-    autoencoder, seqGen = exp_case(1)
+    # autoencoder, seqGen = exp_case(1);
+    autoencoder = exp_case(1);
     autoencoder.getSummaryAutoencoder();
 
 def exp_case(args):
