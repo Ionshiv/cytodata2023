@@ -36,13 +36,16 @@ class Stacker:
         func()
 
     def runAll(self):
+        print('+++ PROCESSING ALL EXPERIMENTS +++')
         self.run143();
         self.run147();
         self.run156();
         self.run180_3();
+        print('+++ ALL EXPERIMENTS PROCESSED +++')
      
     def run143(self):
         #exp 143 r7-28s1 c3-24s1 ch6
+        print('+++ PROCESSING EXP143 +++')
         for i in range(5, 29):
             if i < 10:
                 rowstr = '0' + str(i)
@@ -64,6 +67,7 @@ class Stacker:
 
     def run147(self):
         #exp 147 r_17-18s1 c3-25s2 ch6
+        print('+++ PROCESSING EXP147 +++')
         for i in range(17, 19):
             for j in range(3, 27, 2):
                 for k in range(2, 25):
@@ -88,6 +92,7 @@ class Stacker:
            
     def run156(self):
         #exp 156 r3-30s1 c3-46s1 ch5
+        print('+++ PROCESSING EXP156 +++')
         for i in range(3, 31):
             if i < 10:
                 rowstr = '0' + str(i)
@@ -108,6 +113,7 @@ class Stacker:
 
     def run180_3(self):
         #exp 180/3 r3-30s1 c3-46s1 ch6
+        print('+++ PROCESSING EXP180 AND EXP183 +++')
         for i in range(3, 31):
             if i < 10:
                 rowstr = '0' + str(i)
