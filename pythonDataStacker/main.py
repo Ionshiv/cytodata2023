@@ -1,8 +1,9 @@
 from stacker import Stacker
 def main():
     print('+++ INNITIATE STACKER +++')
+    runStacker();
 
-def runSTacker():
+def runStacker():
     print('+++ EXECUTING STACKER +++')
     stkr = Stacker();
     stkr.makeStacks('all');
