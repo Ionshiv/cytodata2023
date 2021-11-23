@@ -1,13 +1,11 @@
 import builtins
 from lcpae import LcpAe
 from lcpgenerator import LcpGenerator
-from stacker import Stacker
 import cv2 as cv2
 
 def main():
     handshake();
     # runAutoencoder();
-    runStacker();
     # lcpGen = LcpGenerator('/scratch-shared/david/data/ki-database/exp147');
     # lcpGen.simpleTGen();
     endshake();
@@ -18,9 +16,6 @@ def handshake():
 def endshake():
     print("+++ENDING SESSION+++");
 
-def runStacker():
-    print("+++ EXECUTING STACKER-COMMAND+++");
-    Stacker();
 
 def runAutoencoder():
     
