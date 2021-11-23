@@ -6,8 +6,9 @@ import cv2 as cv2
 def main():
     handshake();
     # runAutoencoder();
-    # lcpGen = LcpGenerator('/scratch-shared/david/data/ki-database/exp147');
-    # lcpGen.simpleTGen();
+    lcpGen = LcpGenerator('/scratch-shared/david/data/ki-database/exp147');
+    # lcpGen.testcase();
+    lcpGen.simpleTGen();
     endshake();
 
 def handshake():
