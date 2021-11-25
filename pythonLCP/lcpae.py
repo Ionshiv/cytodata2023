@@ -56,7 +56,7 @@ class LcpAe:
         self.subDecoder.summary();
     
     def fitAutoencoder(self, lcpGen:LcpGenerator):
-        history = self.autoencoder.fit(x=lcpGen.simpleTGen(), epochs=15, batch_size=None, verbose=1, validation_data=lcpGen.simpleVGen())
+        history = self.autoencoder.fit(x=lcpGen.simpleTGen(), epochs=15, batch_size=1, steps_per_epoch=lcpGen.steps_batch, verbose=1, validation_data=lcpGen.simpleVGen())
         # history = self.autoencoder.fit_generator(generator=lcpGen.simpleTGen(), epochs=15, verbose=1, validation_data=lcpGen.simpleVGen())
         return history;
 
@@ -167,7 +167,7 @@ class LcpAe:
 
         x_model = Model(input1, x_flat)
 
-        x_model.summary()
+        # x_model.summary()
 
         input3 = layers.Input((500))
         y = layers.Dense(1350, activation='relu')(input3)
@@ -181,7 +181,7 @@ class LcpAe:
 
         y_model = Model(input3, y_out)
 
-        y_model.summary()
+        # y_model.summary()
 
         input2 = layers.Input((25, 1080, 1080, 6))
         r = layers.TimeDistributed(x_model)(input2)
@@ -190,7 +190,7 @@ class LcpAe:
 
         r_model = Model(input2, r_out)
 
-        r_model.summary()
+        # r_model.summary()
 
         return r_model
 

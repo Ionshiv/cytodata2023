@@ -3,13 +3,14 @@ import numpy as np
 import glob as glob
 class LcpGenerator:
 
-    def __init__(self, inpath:str):
-        self.batch_size = 8;
+    def __init__(self, inpath:str, batch_size:int):
+        self.batch_size = batch_size;
         self.inpath = inpath;
         self.rcpath = sorted(glob.glob(inpath+'/*'));
         self.validpath = self.rcpath[3::4]
         self.trainpath = [i for i in self.rcpath if i not in self.validpath]
-        print('defining generator')
+        self.steps_batch = int(len(self.trainpath)/self.batch_size)
+        print('length of train', len(self.trainpath))
         # print(self.trainpath)
 
     def trainGen(self):

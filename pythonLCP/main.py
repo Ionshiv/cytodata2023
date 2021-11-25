@@ -9,7 +9,7 @@ def main():
     lcpAutoencoder, lcpGen = buildAutoencoder();
     lcpAutoencoder.compileAutoencoder();
     # lcpAutoencoder.getSummaryAutoencoder();
-    history = lcpAutoencoder.fitAutoencoder(lcpGen=lcpGen);
+    # history = lcpAutoencoder.fitAutoencoder(lcpGen=lcpGen);
     # print(type(History))
     # A = np.load('../data/ki-database/exp147/r17c03/sequence.npy')
     # B = np.load('../data/ki-database/exp143/r08c03/sequence.npy')
@@ -61,7 +61,7 @@ def exp143ae():
 
 def exp147ae():
     print('+++ GENERATING: exp147 +++')
-    lcpGen = LcpGenerator(inpath='../data/ki-database/exp147')
+    lcpGen = LcpGenerator(inpath='../data/ki-database/exp147', batch_size=1)
     lcpAutoencoder = LcpAe(25,1080,1080, 6)
     return lcpAutoencoder, lcpGen
 
