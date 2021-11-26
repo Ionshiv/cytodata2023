@@ -7,18 +7,11 @@ import matplotlib.pyplot as plt
 def main():
     handshake();
     lcpAutoencoder, lcpGen = buildAutoencoder();
-    lcpAutoencoder.compileAutoencoder();
+    # lcpAutoencoder.compileAutoencoder();
     # lcpAutoencoder.getSummaryAutoencoder();
-    # history = lcpAutoencoder.fitAutoencoder(lcpGen=lcpGen);
-    # print(type(History))
-    # A = np.load('../data/ki-database/exp147/r17c03/sequence.npy')
-    # B = np.load('../data/ki-database/exp143/r08c03/sequence.npy')
-    # C = np.load('../data/ki-database/exp156/r17c03/sequence.npy')
-    # D = np.load('../data/ki-database/exp180/r17c03/sequence.npy')
-    # print(A.shape, '/',B.shape,'/', C.shape,'/', D.shape)
-    # print(A[1, :, :, :])
-    # A, B = next(lcpGen.simpleTGen())
-    # print(A.shape, B.shape)
+    # history = lcpAutoencoder.fitAutoencoder(lcpGen=lcpGen)
+    for i in range(5):
+        lcpGen.trainGen();
     endshake();
 
 def handshake():

@@ -22,7 +22,7 @@ class LcpAe:
         self.n = n;
         self.channels=channels;
         # self.autoencoder = self.buildAutoencoder();
-        self.autoencoder = self.buildTest();
+        self.autoencoder = self.buildFullAutoencoder();
         self.latentOutputLayer = self.autoencoder.get_layer(name='latent_layer');
         self.startstop(False);
 
@@ -56,11 +56,10 @@ class LcpAe:
         self.subDecoder.summary();
     
     def fitAutoencoder(self, lcpGen:LcpGenerator):
-        history = self.autoencoder.fit(x=lcpGen.simpleTGen(), epochs=15, batch_size=1, steps_per_epoch=lcpGen.steps_batch, verbose=1, validation_data=lcpGen.simpleVGen())
-        # history = self.autoencoder.fit_generator(generator=lcpGen.simpleTGen(), epochs=15, verbose=1, validation_data=lcpGen.simpleVGen())
+        history = self.autoencoder.fit(x=lcpGen.simpleTGen(), epochs=3, batch_size=1, steps_per_epoch=18, verbose=1, validation_data=lcpGen.simpleVGen(), validation_steps=18)
         return history;
 
-    def buildAutoencoder(self):
+    def buildFullAutoencoder(self):
         ingress = layers.Input((self.m, self.n, self.channels))
         encoder = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(ingress)
         encoder = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
@@ -153,6 +152,8 @@ class LcpAe:
         fullAutoencoder = Model(rEnIn, rDecoderSegment);
         return fullAutoencoder;
 
+    def buildSegmentedAutoencoder(self):
+        print('TBD')
 
     def buildTest(self):
         print('Dormant')

@@ -9,32 +9,63 @@ class LcpGenerator:
         self.rcpath = sorted(glob.glob(inpath+'/*'));
         self.validpath = self.rcpath[3::4]
         self.trainpath = [i for i in self.rcpath if i not in self.validpath]
-        self.steps_batch = int(len(self.trainpath)/self.batch_size)
+        self.steps_batch = len(self.trainpath)//self.batch_size
         print('length of train', len(self.trainpath))
         # print(self.trainpath)
 
     def trainGen(self):
         while True:
-            print('soon');
-            batch_in = [];
-            batch_out = [];
+            batch_x = [];
+            batch_y = [];
+            batch_files = np.random.choice(self.trainpath, size = 8);
+            for i, seqpath in enumerate(batch_files):
+                seq = self.getImage(seqpath + '/sequence.npy')
+                batch_x += [seq]
+                print(i)
+            for j, seqpath in enumerate(batch_files):
+                seq = self.getImage(seqpath + '/sequence.npy')
+                batch_y += [seq]
+                print(j)
+            batch_x = np.array(batch_x)
+            batch_y = np.array(batch_y)
+            yield batch_x, batch_y 
 
     def validGen(self):
 
-        print('Validation Generator')
+        while True:
+            batch_x = [];
+            batch_y = [];
+            batch_files = np.random.choice(self.validpath, size = 8);
+            for i, seqpath in enumerate(batch_files):
+                seq = self.getImage(seqpath + '/sequence.npy')
+                batch_x += [seq]
+                print(i)
+            for j, seqpath in enumerate(batch_files):
+                seq = self.getImage(seqpath + '/sequence.npy')
+                batch_y += [seq]
+                print(j)
+            batch_x = np.array(batch_x)
+            batch_y = np.array(batch_y)
+            yield batch_x, batch_y 
 
     def testcase(self):
-        list1 = ['qwe', 'rty', 'uio', 'pas', 'dfg', 'hjk', 'lzx', 'cvb', 'nm', 'åöä']
+        list1 = ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff', 'ggg', 'hhh', 'iii', 'jjj']
         # list2 = [ 'rty', 'pas', 'hjk']
-        list2 = list1[2::3]
-        list3 = [i for i in list1 if i not in list2]
-        print(list1)
-        Iterating = True
-        while Iterating:
+        # list2 = list1[2::3]
+        # list3 = [i for i in list1 if i not in list2]
+        # print(list1)
+        # Iterating = True
+        j = 0;
+        while True:
+            print('list1 before pop + append:   ', list1)
             value = list1.pop(0)
+            list1.append(value)
+            print('list1 after pop + append:    ', list1)
             print(value)
-            if not list1:
-                Iterating = False
+            j += 1;
+            return value, j
+            # if not list1:
+            #     Iterating = False
 
 
     def getImage(self, impath):
@@ -45,27 +76,17 @@ class LcpGenerator:
         return npImage;
 
     def simpleTGen(self):
-        # print('TESTING')
-        trainpath = self.trainpath.copy();
-        # print(trainpath)
         while True:
-            if not trainpath:
-                break
-            seqpath = trainpath.pop(0);
-            # print(seqpath)
-            seq = self.getImage(seqpath + '/sequence.npy')
-            # print('this is input shape: ', seq.shape)
+            seqpath = np.random.choice(self.trainpath, size = 1)
+            seq = self.getImage(seqpath[0] + '/sequence.npy')
             seqx = seq
             seqy = seq
             yield seqx, seqy      
 
     def simpleVGen(self):
-        validpath = self.validpath.copy();
         while True:
-            if not validpath:
-                break
-            seqpath = validpath.pop(0);
-            seq = self.getImage(seqpath + '/sequence.npy')
+            seqpath = np.random.choice(self.validpath, size=1)
+            seq = self.getImage(seqpath[0] + '/sequence.npy')
             seqx = seq
             seqy = seq
             yield seqx, seqy
