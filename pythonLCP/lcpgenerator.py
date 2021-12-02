@@ -16,7 +16,7 @@ class LcpGenerator:
     def trainGen(self):
         while True:
             batch = [];
-            batch_files = np.random.choice(self.trainpath, size = self.batch_size);
+            batch_files = np.random.choice(self.trainpath, size = self.batch_size, replace=False);
             for i, seqpath in enumerate(batch_files):
                 seq = self.getImage(seqpath + '/sequence.npy')
                 batch += [seq]
@@ -30,7 +30,7 @@ class LcpGenerator:
     def validGen(self):
         while True:
             batch = [];
-            batch_files = np.random.choice(self.validpath, size = self.batch_size);
+            batch_files = np.random.choice(self.validpath, size = self.batch_size, replace=False);
             for i, seqpath in enumerate(batch_files):
                 seq = self.getImage(seqpath + '/sequence.npy')
                 batch += [seq]
@@ -74,20 +74,45 @@ class LcpGenerator:
         # npImage = np.reshape(npImage, (1, npImage.shape[0], npImage.shape[1], npImage.shape[2], npImage.shape[3]))
         return npImage;
 
-    def simpleTGen(self):
-        while True:
-            seqpath = np.random.choice(self.trainpath, size = 1)
-            seq = self.getImage(seqpath[0] + '/sequence.npy')
-            seq = np.reshape(seq, (1, seq.shape[0], seq.shape[1], seq.shape[2], seq.shape[3]))
-            seqx = seq
-            seqy = seq
-            yield seqx, seqy      
+    def onlineTraining(self):
+        # while True:
+        seqpath = np.random.choice(self.trainpath, size = 1)
+        seq = self.getImage(seqpath[0] + '/sequence.npy')
+        seq = np.reshape(seq, (1, seq.shape[0], seq.shape[1], seq.shape[2], seq.shape[3]))
+        seqx = seq
+        seqy = seq
+        return seqx, seqy  
 
-    def simpleVGen(self):
-        while True:
-            seqpath = np.random.choice(self.validpath, size=1)
-            seq = self.getImage(seqpath[0] + '/sequence.npy')
-            seq = np.reshape(seq, (1, seq.shape[0], seq.shape[1], seq.shape[2], seq.shape[3]))
-            seqx = seq
-            seqy = seq
-            yield seqx, seqy
+    def batchTraining(self):
+        
+        batch = [];
+        batch_files = np.random.choice(self.trainpath, size = self.batch_size);
+        for i, seqpath in enumerate(batch_files):
+            seq = self.getImage(seqpath + '/sequence.npy')
+            batch += [seq]
+            if self.input_aug:
+                seq_aug = self.augment(seq);
+                batch += seq_aug;
+        batch_x = np.array(batch);
+        batch_y = np.array(batch.copy())
+        return batch_x, batch_y 
+
+    def onlineValidation(self):
+        # while True:
+        seqpath = np.random.choice(self.validpath, size=1)
+        seq = self.getImage(seqpath[0] + '/sequence.npy')
+        seq = np.reshape(seq, (1, seq.shape[0], seq.shape[1], seq.shape[2], seq.shape[3]))
+        seqx = seq
+        seqy = seq
+        return seqx, seqy
+
+    def batchValidation(self):
+        
+        batch = [];
+        batch_files = np.random.choice(self.validpath, size = self.batch_size);
+        for i, seqpath in enumerate(batch_files):
+            seq = self.getImage(seqpath + '/sequence.npy')
+            batch += [seq]
+        batch_x = np.array(batch)
+        batch_y = np.array(batch.copy())
+        return batch_x, batch_y

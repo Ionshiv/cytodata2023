@@ -1,4 +1,7 @@
 import numpy as np
+import os as os
+from datetime import datetime
+from tensorflow.python.ops.control_flow_ops import case
 from lcpae import LcpAe
 from lcpgenerator import LcpGenerator
 import matplotlib.pyplot as plt
@@ -6,11 +9,24 @@ import matplotlib.pyplot as plt
 
 def main():
     handshake();
-    lcpAutoencoder = buildAutoencoder('exp147', 2);
+    model_type = 'exp147'
+    epochs = 60
+    model_name = model_type + '_epochs_' + str(epochs)
+    class_name = 'CRAE_arch'
+    batch_size = 1
+    lcpAutoencoder = buildAutoencoder(case=model_type, batch_size=batch_size);
     lcpAutoencoder.compileAutoencoder();
     # lcpAutoencoder.getSummaryAutoencoder();
+    # lcpAutoencoder.getSummaryExtractor();
     # lcpAutoencoder.testGenerator();
-    history = lcpAutoencoder.fitAutoencoder();
+    history = lcpAutoencoder.fitAutoencoder(epochs=epochs);
+    plot_history(history, model_name, class_name)
+    if not os.path.exists('../model_data/'+class_name):
+        os.makedirs('../model_data/'+class_name)
+    timestampObj = datetime.now()
+    timestampStr = timestampObj.strftime("_D%Y%M%d_T%H%M%S")
+    lcpAutoencoder.autoencoder.save('../model_data/'+class_name+'/'+model_name+timestampStr+'full')
+    lcpAutoencoder.encoder.save('../model_data/'+class_name+'/'+model_name+timestampStr+'encoderSegment')
     endshake();
 
 def handshake():
@@ -19,6 +35,26 @@ def handshake():
 def endshake():
     print("+++ENDING SESSION+++");
 
+def plot_history(history, model_name, class_name):
+    fig = plt.figure(figsize=(15,5), facecolor='w')
+    ax = fig.add_subplot(121)
+    ax.plot(history.history['loss'])
+    ax.plot(history.history['val_loss'])
+    ax.set(title=model_name + ': Model loss', ylabel='Loss', xlabel='Epoch')
+    ax.legend(['Train', 'Test'], loc='upper right')
+    ax = fig.add_subplot(122)
+    ax.plot(np.log(history.history['loss']))
+    ax.plot(np.log(history.history['val_loss']))
+    ax.set(title=model_name + ': Log model loss', ylabel='Log loss', xlabel='Epoch')
+    ax.legend(['Train', 'Test'], loc='upper right')
+    plt.show()
+    plot_path = '../model_data/' + class_name
+    if not os.path.exists(plot_path):
+        os.makedirs(plot_path)
+    timestampObj = datetime.now()
+    timestampStr = timestampObj.strftime("_D%Y%M%d_T%H%M%S")
+    plt.savefig(plot_path+'/'+ model_name +timestampStr + '.png', format='png')
+    plt.close()
 
 def buildAutoencoder(case:str, batch_size:int, input_aug:bool=False):
     
@@ -27,7 +63,7 @@ def buildAutoencoder(case:str, batch_size:int, input_aug:bool=False):
 
 def runAutoencoder(autoencoder:LcpAe):
     print('run')
-    history = autoencoder.fitAutoencoder();
+    history = autoencoder.fitAutoencoder(epochs=3);
     return history
 
 

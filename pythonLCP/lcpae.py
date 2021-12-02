@@ -1,3 +1,4 @@
+from keras.engine import input_layer
 import tensorflow as tf
 import numpy as np
 import sklearn as sk
@@ -20,9 +21,8 @@ class LcpAe:
         self.channels=channels;
         self.startGenerator();
         # self.testGenerator();
-        # self.autoencoder = self.buildFullAutoencoder();
-        self.autoencoder = self.buildTest();
-        self.latentOutputLayer = self.autoencoder.get_layer(name='latent_layer');
+        self.autoencoder, self.encoder, self.decoder = self.buildFullAutoencoder();
+        # self.autoencoder = self.buildTest();
         self.startstop(False);
 
     def startGenerator(self):
@@ -41,117 +41,129 @@ class LcpAe:
     
     def getAutoencoderModel(self):
         return self.autoencoder;
-    
-    def getLatentSpaceLayer(self):
-        return self.latentOutputLayer;
 
     def compileAutoencoder(self):
+        self.encoder.compile(optimizer='adam', loss='mse');
+        self.decoder.compile(optimizer='adam', loss='mse');
         self.autoencoder.compile(optimizer='adam', loss='mse');
 
     def getSummaryAutoencoder(self):
         self.x_model.summary();
         self.autoencoder.summary();
         self.y_model.summary();
+
+    def getSummaryExtractor(self):
+        self.encoder.summary();
     
-    def fitAutoencoder(self):
+    def fitAutoencoder(self, epochs:int):
         aug_factor = 1
         if self.input_aug:
             aug_factor = 4;
-        history = self.autoencoder.fit(x=self.lcpGen.trainGen(), epochs=3, batch_size=aug_factor*self.batch_size, steps_per_epoch=aug_factor*len(self.lcpGen.trainpath)//self.batch_size, verbose=1, validation_data=self.lcpGen.validGen(), validation_steps=aug_factor*len(self.lcpGen.validpath)//self.batch_size)
+        history = self.autoencoder.fit(x=self.lcpGen.trainGen(), epochs=epochs, batch_size=aug_factor*self.batch_size, steps_per_epoch=aug_factor*len(self.lcpGen.trainpath)//self.batch_size, verbose=1, validation_data=self.lcpGen.validGen(), validation_steps=aug_factor*len(self.lcpGen.validpath)//self.batch_size)
         return history;
 
     def buildFullAutoencoder(self):
-        ingress = layers.Input((self.m, self.n, self.channels))
-        encoder = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(ingress)
-        encoder = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoderDown0 = layers.MaxPool2D(pool_size=(2, 2), strides=2)(encoder)
+        autoencoder, encoder, decoder = self.buildNetworks();
+        return autoencoder, encoder, decoder
 
-        encoder = layers.Conv2D(filters=2*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown0)
-        encoder = layers.Conv2D(filters=2*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoder = layers.Conv2D(filters=2*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoderDown1 = layers.MaxPool2D(pool_size=(2,2), strides=2)(encoder)
+    def buildNetworks(self):
+        ingress = layers.Input((self.m, self.n, self.channels), name='main_input')
+        x = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(ingress)
+        x = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        encoderDown0 = layers.MaxPool2D(pool_size=(2, 2), strides=2)(x)
 
-        encoder = layers.Conv2D(filters=3*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown1)
-        encoder = layers.Conv2D(filters=3*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoder = layers.Conv2D(filters=3*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoderDown2 = layers.MaxPool2D(pool_size=(2,2), strides=2)(encoder)
+        x = layers.Conv2D(filters=2*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown0)
+        x = layers.Conv2D(filters=2*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        x = layers.Conv2D(filters=2*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        encoderDown1 = layers.MaxPool2D(pool_size=(2,2), strides=2)(x)
 
-        encoder = layers.Conv2D(filters=4*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown2)
-        encoder = layers.Conv2D(filters=4*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoder = layers.Conv2D(filters=4*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoderDown3 = layers.MaxPool2D(pool_size=(3,3), strides=3)(encoder)
+        x = layers.Conv2D(filters=3*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown1)
+        x = layers.Conv2D(filters=3*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        x = layers.Conv2D(filters=3*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        encoderDown2 = layers.MaxPool2D(pool_size=(2,2), strides=2)(x)
 
-        encoder = layers.Conv2D(filters=5*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown3)
-        encoder = layers.Conv2D(filters=5*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoder = layers.Conv2D(filters=5*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoderDown4 = layers.MaxPool2D(pool_size=(3,3), strides=3)(encoder)
+        x = layers.Conv2D(filters=4*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown2)
+        x = layers.Conv2D(filters=4*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        x = layers.Conv2D(filters=4*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        encoderDown3 = layers.MaxPool2D(pool_size=(3,3), strides=3)(x)
 
-        encoder = layers.Conv2D(filters=6*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown4)
-        encoder = layers.Conv2D(filters=6*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoder = layers.Conv2D(filters=6*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoderDown5 = layers.MaxPool2D(pool_size=(3,3), strides=3)(encoder)
+        x = layers.Conv2D(filters=5*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown3)
+        x = layers.Conv2D(filters=5*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        x = layers.Conv2D(filters=5*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        encoderDown4 = layers.MaxPool2D(pool_size=(3,3), strides=3)(x)
 
-        encoder = layers.Conv2D(filters=7*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown5)
-        encoder = layers.Conv2D(filters=7*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoder = layers.Conv2D(filters=7*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoder)
-        encoderDown6 = layers.Flatten()(encoder)
-        x_model = self.x_model = Model(ingress, encoderDown6)
-        x_model._name = "subEncoder_model"
-        rEnIn = layers.Input((self.timeframes, self.m, self.n, self.channels), name='conv_time_input_layer')
-        rEncoderSegment = layers.TimeDistributed(x_model, name='conv_timedist_layer')(rEnIn)
+        x = layers.Conv2D(filters=6*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown4)
+        x = layers.Conv2D(filters=6*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        x = layers.Conv2D(filters=6*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        encoderDown5 = layers.MaxPool2D(pool_size=(3,3), strides=3)(x)
 
-
-        bottleneck = bIn = layers.GRU(500, return_sequences=True)(rEncoderSegment)
-        bottleneck = layers.GRU(250, return_sequences=True)(bottleneck)
-        bottleneck = latentLayer = layers.GRU(100, return_sequences=True, name='latent_layer')(bottleneck)
-        bottleneck = layers.GRU(250, return_sequences=True)(bottleneck)
-        bottleneck = bOut = layers.GRU(500, return_sequences=True)(bottleneck)
-
-
-        dIngress = layers.Input(bOut.shape[2], name='subDecod_input_layer');
-        dFormat = layers.Dense(encoderDown6.shape[1], activation='relu')(dIngress);
-        decoderUp0 = layers.Reshape((encoder.shape[1], encoder.shape[2], encoder.shape[3]))(dFormat);
-        decoder = layers.Conv2DTranspose(filters=7*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp0);
-        decoder = layers.Conv2DTranspose(filters=7*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-        decoder = layers.Conv2DTranspose(filters=7*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-
-        decoderUp1 = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), strides=(3,3), padding='same')(decoder);
-        decoder = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp1);
-        decoder = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-        decoder = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-
-        decoderUp2 = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), strides=(3,3), padding='same')(decoder);
-        decoder = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp2);
-        decoder = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-        decoder = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-
-        decoderUp3 = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), strides=(3,3), padding='same')(decoder);
-        decoder = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp3);
-        decoder = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-        decoder = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-
-        decoderUp4 = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(2,2), strides=(2,2), padding='same')(decoder);
-        decoder = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp4);
-        decoder = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-        decoder = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-
-        decoderUp5 = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(2,2), strides=(2,2), padding='same')(decoder);
-        decoder = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp5);
-        decoder = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-        decoder = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-
-        decoderUp6 = layers.Conv2DTranspose(filters=self.channels, kernel_size=(2,2), strides=(2,2), padding='same')(decoder);
-        decoder = layers.Conv2DTranspose(filters=self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp6);
-        decoder = layers.Conv2DTranspose(filters=self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoder);
-        egress = layers.Conv2D(filters=self.channels, kernel_size=(3,3), strides=(1,1), padding='same', activation='sigmoid')(decoder);
+        x = layers.Conv2D(filters=7*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown5)
+        x = layers.Conv2D(filters=7*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        x = layers.Conv2D(filters=7*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
+        encoderDown6 = layers.Flatten()(x)
         
 
-        y_model = self.y_model = Model(dIngress, egress);
-        y_model._name='SubDecoder_model'
-        rDecoderSegment = layers.TimeDistributed(y_model)(bOut);
 
-        fullAutoencoder = Model(rEnIn, rDecoderSegment);
-        return fullAutoencoder;
+        yIngress = layers.Input(500, name='subDecod_input_layer');
+        yFormat = layers.Dense(encoderDown6.shape[1], activation='relu')(yIngress);
+        decoderUp0 = layers.Reshape((x.shape[1], x.shape[2], x.shape[3]))(yFormat);
+        y = layers.Conv2DTranspose(filters=7*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp0);
+        y = layers.Conv2DTranspose(filters=7*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+        y = layers.Conv2DTranspose(filters=7*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+
+        decoderUp1 = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), strides=(3,3), padding='same')(y);
+        y = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp1);
+        y = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+        y = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+
+        decoderUp2 = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), strides=(3,3), padding='same')(y);
+        y = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp2);
+        y = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+        y = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+
+        decoderUp3 = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), strides=(3,3), padding='same')(y);
+        y = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp3);
+        y = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+        y = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+
+        decoderUp4 = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(2,2), strides=(2,2), padding='same')(y);
+        y = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp4);
+        y = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+        y = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+
+        decoderUp5 = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(2,2), strides=(2,2), padding='same')(y);
+        y = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp5);
+        y = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+        y = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+
+        decoderUp6 = layers.Conv2DTranspose(filters=self.channels, kernel_size=(2,2), strides=(2,2), padding='same')(y);
+        y = layers.Conv2DTranspose(filters=self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp6);
+        y = layers.Conv2DTranspose(filters=self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
+        egress = layers.Conv2D(filters=self.channels, kernel_size=(3,3), strides=(1,1), padding='same', activation='sigmoid')(y);
+
+
+        x_model = self.x_model = Model(ingress, encoderDown6)
+        x_model._name = "subEncoder_model"
+        y_model = self.y_model = Model(yIngress, egress);
+        y_model._name='SubDecoder_model'
+
+        recurrentIngress = layers.Input((self.timeframes, self.m, self.n, self.channels), name='conv_time_input_layer')
+        recurrentEncoderWrap = layers.TimeDistributed(x_model, name='conv_timedist_layer')(recurrentIngress)
+        z = bIn = layers.GRU(500, return_sequences=True)(recurrentEncoderWrap)
+        z = layers.Dropout(0.3)(z)
+        z = layers.GRU(250, return_sequences=True)(z)
+        z = latentLayer = layers.GRU(100, return_sequences=True, name='latent_layer')(z)
+        z = latent_in = layers.Input((self.timeframes, 100))
+        z = decoderIn = layers.GRU(250, return_sequences=True)(z)
+        z = layers.Dropout(0.3)(z)
+        z = bOut = layers.GRU(500, return_sequences=True)(z)
+        recurrentDecoderWrap = layers.TimeDistributed(y_model)(z);
+
+        encoder = Model(recurrentIngress, latentLayer)
+        decoder = Model(latent_in, recurrentDecoderWrap)
+        fullAutoencoder = Model(recurrentIngress, decoder(encoder(recurrentIngress)));
+
+        return fullAutoencoder, encoder, decoder;
 
     def buildSegmentedAutoencoder(self):
         print('TBD')
@@ -189,6 +201,7 @@ class LcpAe:
         r = layers.TimeDistributed(x_model)(input2)
         r = layers.GRU(500, return_sequences=True, name='latent_layer')(r)
         r = layers.Dropout(0.5)(r)
+
         r_out = layers.TimeDistributed(y_model)(r)
 
         r_model =  Model(input2, r_out)
