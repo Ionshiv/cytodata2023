@@ -15,7 +15,7 @@ import tensorflow as tf
 def main():
     handshake();
     model_type = 'exp147'
-    epochs = 60
+    epochs = 300
     model_name = model_type + '_epochs_' + str(epochs)
     class_name = 'CRAE_arch'
     batch_size = 1
