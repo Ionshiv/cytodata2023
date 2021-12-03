@@ -43,8 +43,8 @@ class LcpAe:
         return self.autoencoder;
 
     def compileAutoencoder(self):
-        self.encoder.compile(optimizer='adam', loss='mse');
-        self.decoder.compile(optimizer='adam', loss='mse');
+        # self.encoder.compile(optimizer='adam', loss='binary_crossentropy');
+        # self.decoder.compile(optimizer='adam', loss='binary_crossentropy');
         self.autoencoder.compile(optimizer='adam', loss='mse');
 
     def getSummaryAutoencoder(self):
@@ -67,7 +67,7 @@ class LcpAe:
         return autoencoder, encoder, decoder
 
     def buildNetworks(self):
-        ingress = layers.Input((self.m, self.n, self.channels), name='main_input')
+        ingress = layers.Input((self.m, self.n, self.channels))
         x = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(ingress)
         x = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
         encoderDown0 = layers.MaxPool2D(pool_size=(2, 2), strides=2)(x)
@@ -147,15 +147,13 @@ class LcpAe:
         y_model = self.y_model = Model(yIngress, egress);
         y_model._name='SubDecoder_model'
 
-        recurrentIngress = layers.Input((self.timeframes, self.m, self.n, self.channels), name='conv_time_input_layer')
+        recurrentIngress = layers.Input((self.timeframes, self.m, self.n, self.channels), name='main_input')
         recurrentEncoderWrap = layers.TimeDistributed(x_model, name='conv_timedist_layer')(recurrentIngress)
         z = bIn = layers.GRU(500, return_sequences=True)(recurrentEncoderWrap)
-        z = layers.Dropout(0.3)(z)
-        z = layers.GRU(250, return_sequences=True)(z)
-        z = latentLayer = layers.GRU(100, return_sequences=True, name='latent_layer')(z)
+        z = layers.GRU(250, return_sequences=True, recurrent_dropout=0.3, dropout=0.3)(z)
+        z = latentLayer = layers.GRU(100, return_sequences=True)(z)
         z = latent_in = layers.Input((self.timeframes, 100))
-        z = decoderIn = layers.GRU(250, return_sequences=True)(z)
-        z = layers.Dropout(0.3)(z)
+        z = decoderIn = layers.GRU(250, return_sequences=True, dropout= 0.3, recurrent_dropout=0.3)(z)
         z = bOut = layers.GRU(500, return_sequences=True)(z)
         recurrentDecoderWrap = layers.TimeDistributed(y_model)(z);
 
@@ -166,7 +164,7 @@ class LcpAe:
         return fullAutoencoder, encoder, decoder;
 
     def buildSegmentedAutoencoder(self):
-        print('TBD')
+        self.encoder = Model(self.autoencoder.get_layer('main_input'), self.autoencoder.get_layer('latent_layer'))
 
     def buildTest(self):
         print('Dormant')
