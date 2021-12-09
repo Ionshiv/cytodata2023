@@ -14,13 +14,13 @@ import tensorflow as tf
 
 def main():
     handshake();
-    model_type = 'exp147'
-    epochs = 300
+    model_type = 'exp156'
+    epochs = 60
     model_name = model_type + '_epochs_' + str(epochs)
     class_name = 'CRAE_arch'
     batch_size = 1
-    history = runNewModel(model_name=model_name, model_type=model_type, class_name=class_name, epochs=epochs, batch_size=batch_size)
-    # runTrainedModel();
+    # history = runNewModel(model_name=model_name, model_type=model_type, class_name=class_name, epochs=epochs, batch_size=batch_size)
+    runTrainedModel();
     endshake();
 
 
@@ -74,7 +74,7 @@ def runNewModel(model_type:str, model_name:str, class_name:str, epochs:int, batc
     return history
 
 def runTrainedModel():
-    encoder = load_model('/scratch-shared/david/model_data/CRAE_arch/exp147_epochs_3_D20214802_T204802encoderSegment.h5')
+    encoder = load_model('/scratch-shared/david/model_data/CRAE_arch/exp147_epochs_60_D20214802_T204802encoderSegment.h5')
     encoder.summary()
     lcpgen = LcpGenerator('../')
     history = encoder.predict
