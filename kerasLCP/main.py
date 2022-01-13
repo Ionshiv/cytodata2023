@@ -10,6 +10,7 @@ from keras import layers
 from keras.models import Model
 from keras.models import load_model
 import tensorflow as tf
+import glob as glob
 
 
 def main():
@@ -20,7 +21,12 @@ def main():
     class_name = 'CRAE_arch'
     batch_size = 1
     # history = runNewModel(model_name=model_name, model_type=model_type, class_name=class_name, epochs=epochs, batch_size=batch_size)
-    runTrainedModel();
+    predArray = runTrainedModel();
+    plotPrediction(predArray=predArray)
+    # a = np.zeros((25, 100))
+    # b = a[:,99]
+    
+
     endshake();
 
 
@@ -74,10 +80,40 @@ def runNewModel(model_type:str, model_name:str, class_name:str, epochs:int, batc
     return history
 
 def runTrainedModel():
-    encoder = load_model('/scratch-shared/david/model_data/CRAE_arch/exp147_epochs_60_D20214802_T204802encoderSegment.h5')
+    encoder = load_model('/scratch-shared/david/model_data/CRAE_arch/exp147_epochs_60_D20213703_T153737encoderSegment')
     encoder.summary()
-    lcpgen = LcpGenerator('../')
-    history = encoder.predict
+    encoder.compile(optimizer='Adam', loss='mse')
+    # predGen = LcpGenerator(inpath='../data/ki-database/exp147', batch_size = 1, input_aug=False)
+    predArray = []
+    loadpath = sorted(glob.glob('../data/ki-database/exp147'+'/*'))
+    loadpath = loadpath[3::4]
+    for i, inpath in enumerate(loadpath):
+        print(i)
+        print(inpath)
+        npseq = np.load(inpath+'/sequence.npy').astype(float)
+        npseq = npseq/65535
+        npseq = np.reshape(npseq, (1, npseq.shape[0], npseq.shape[1], npseq.shape[2], npseq.shape[3]))
+        print(npseq.shape)
+        nppred = encoder.predict(npseq)
+        predArray += [nppred]
+    return predArray
+
+def plotPrediction(predArray):
+        print('')
+        index = 0
+        for nppred in predArray:
+            index += 1
+            nppred = np.reshape(nppred, (25, 100))
+            # print(nppred.shape)
+            # plt.figure(figsize=(10, 10), facecolor='w')
+            # plt.imshow(nppred, cmap='hot')
+            # plt.show()
+            # plt.savefig('../data/fig'+str(index)+'147.png')
+            # plt.close()
+            
+        
+
+    
 
 def exp_case(case, batch_size, input_aug:bool=False):
     # lcpAutoencoder = LcpAe();
