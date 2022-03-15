@@ -70,7 +70,7 @@ class LcpGenerator:
 
     def getImage(self, impath):
         npImage = np.load(impath).astype(float);
-        npImage = npImage/65535;
+        # npImage = npImage/65535;
         # npImage = np.reshape(npImage, (1, npImage.shape[0], npImage.shape[1], npImage.shape[2], npImage.shape[3]))
         return npImage;
 
