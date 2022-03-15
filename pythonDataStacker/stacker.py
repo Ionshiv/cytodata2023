@@ -66,7 +66,6 @@ class Stacker:
                     Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
                     Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
                     Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
-                    print('DataSequence Shape:  ', dataSeq.shape)
 
     def run147(self):
         #exp 147 r_17-18s1 c3-25s2 ch6
@@ -100,7 +99,6 @@ class Stacker:
                 Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch3', ch3seq)
                 Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch4', ch4seq)
                 Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch5', ch5seq)
-                # print('DataSequence Shape:  ', dataSeq.shape)
            
     def run156(self):
         #exp 156 r3-30s1 c3-46s1 ch5
@@ -117,7 +115,6 @@ class Stacker:
                     colstr = str(j)
                 dataSeq = self.makeSequence(self.inpath_exp156 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch',1 , 15, 5)
                 Stacker.saveim(self.outpath_exp156 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
-                print('DataSequence Shape:  ', dataSeq.shape)
 
     def run180_3(self):
         #exp 180/3 r3-30s1 c3-46s1 ch6
@@ -163,8 +160,6 @@ class Stacker:
         if channels == 6:
             print('+++ 6 channels +++')
             data0 = Stacker.loadim(inpath + str(1) + timestr)
-            print(inpath + str(1) + timestr) 
-            print(type(data0))
             data1 = Stacker.loadim(inpath + str(2) + timestr)
             data2 = Stacker.loadim(inpath + str(3) + timestr)
             data3 = Stacker.loadim(inpath + str(4) + timestr)
@@ -182,8 +177,6 @@ class Stacker:
         elif channels == 5:
             print('+++ 5 channels +++')
             data0 = Stacker.loadim(inpath + str(1) + timestr)
-            print(inpath + str(1) + timestr) 
-            print(type(data0))
             data1 = Stacker.loadim(inpath + str(2) + timestr)
             data2 = Stacker.loadim(inpath + str(3) + timestr)
             data3 = Stacker.loadim(inpath + str(4) + timestr)
@@ -240,12 +233,10 @@ class Stacker:
                 ch3seq = np.concatenate((ch3seq, ch3frame), axis=0)
                 ch4seq = np.concatenate((ch4seq, ch4frame), axis=0)
                 ch5seq = np.concatenate((ch5seq, ch5frame), axis=0)
-            # print(dataSequence.shape)
         dataSequence = [ch0seq] + [ch1seq] + [ch2seq] + [ch3seq] + [ch4seq] + [ch5seq]
         return dataSequence
     
     def repairSequence(self, inpath1:str, inpath2:str, tstart1:int, tend1:int, tstart2:int, tend2:int, channels:int):
-        print('')
         seq180 = self.makeSequence(inpath=inpath1, timestart=tstart1, timeend=tend1, channels=channels)
         seq183 = self.makeSequence(inpath=inpath2, timestart=tstart2, timeend=tend2, channels=channels)
         ch0 = np.concatenate((seq180[0],seq183[0]), 0)
