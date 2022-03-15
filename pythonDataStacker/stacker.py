@@ -76,26 +76,6 @@ class Stacker:
                 dataSeq = np.concatenate((t0Frame, dataSeq), 0)
                 Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'sequence', dataSeq)
                 print('DataSequence Shape:  ', dataSeq.shape)
-                # for k in range(2, 25):
-                #     if j < 10:
-                #         colstr = '0'+str(j)
-                #     else:
-                #         colstr = str(j)
-                #     if k <= 10:
-                #         kstr = '0'+str(k-1)
-                #     else:
-                #         kstr = str(k-1)
-                #     dataStack =  Stacker.makestack(self.inpath_exp147 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
-                    # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + kstr, dataStack)
-        # for i in range(17, 19):
-        #     for j in range(3, 27, 2):
-        #         if j < 10:
-        #             colstr = '0'+str(j)
-        #         else:
-        #             colstr = str(j) 
-        #         print('placeholder')
-                # dataStack =  Stacker.makestack(self.inpath_exp147t0 + 'r' + str(i) + 'c' + colstr + 'f01p01-ch', 'sk1fk1fl1.tiff', 6 )
-                # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk00', dataStack)
            
     def run156(self):
         #exp 156 r3-30s1 c3-46s1 ch5
@@ -113,17 +93,6 @@ class Stacker:
                 dataSeq = self.makeSequence(self.inpath_exp156 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch',1 , 15, 5)
                 Stacker.saveim(self.outpath_exp156 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
                 print('DataSequence Shape:  ', dataSeq.shape)
-                # for k in range(1, 15):
-                #     if j < 10:
-                #         colstr = '0'+str(j)
-                #     else:
-                #         colstr = str(j)
-                #     if k <= 10:
-                #         kstr = '0'+str(k-1)
-                #     else:
-                #         kstr = str(k-1) 
-                #     dataStack =  Stacker.makestack(self.inpath_exp156 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 5 )
-                    # Stacker.saveim(self.outpath_exp156 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + kstr, dataStack)
 
     def run180_3(self):
         #exp 180/3 r3-30s1 c3-46s1 ch6
@@ -140,37 +109,10 @@ class Stacker:
                     colstr = str(j)
                 dataSeq = self.repairSequence(self.inpath_exp180 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', self.inpath_exp183 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 1, 24, 1, 3, 6)
                 Stacker.saveim(self.outpath_exp180 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
-                # for k in range(1, 24):
-                #     if j < 10:
-                #         colstr = '0'+str(j)
-                #     else:
-                #         colstr = str(j)
-                #     if k <= 10:
-                #         kstr = '0'+str(k-1)
-                #     else:
-                #         kstr = str(k-1)
-                #     dataStack =  Stacker.makestack(self.inpath_exp180 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
-                    # Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk' + kstr, dataStack)
-        # for i in range(3, 31):
-        #     if i < 10:
-        #         rowstr = '0' + str(i)
-        #     else:
-        #         rowstr = str(i)
-        #     for j in range(3, 47):
-        #         print('')
-                # for k in range(1, 3):
-                #     if j < 10:
-                #         colstr = '0'+str(j)
-                #     else:
-                #         colstr = str(j) 
-                #     dataStack =  Stacker.makestack(self.inpath_exp183 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 'sk' + str(k) + 'fk1fl1.tiff', 6 )
-                    # Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + str(j) + 'f01p01', 'sk'+ str(k+22), dataStack)
+
 
     def loadim(inpath: str):
         print('+++ LOADING DATA +++')
-        # image = Image.open(inpath)
-        # image.load()
-        # data = np.array(image, "int32" )
         data = cv2.imread(inpath, -1)
         return data
 
