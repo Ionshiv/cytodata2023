@@ -69,31 +69,24 @@ class LcpAe:
     def buildNetworks(self):
         ingress = layers.Input((self.m, self.n, self.channels))
         x = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(ingress)
-        # x = layers.Conv2D(filters=self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
         encoderDown0 = layers.Conv2D(filters=1*self.channels, padding='same', kernel_size=(3, 3), strides=(2,2), activation='relu')(x)
         #540
         x = layers.Conv2D(filters=2*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown0)
-        # x = layers.Conv2D(filters=2*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
         encoderDown1 = layers.Conv2D(filters=3*self.channels, padding='same', kernel_size=(5, 5), strides=(2,2), activation='relu')(x)
         #270
         x = layers.Conv2D(filters=3*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown1)
-        # x = layers.Conv2D(filters=3*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
         encoderDown2 = layers.Conv2D(filters=4*self.channels, padding='same', kernel_size=(5, 5), strides=(2,2), activation='relu')(x)
         #135 - HERE
         x = layers.Conv2D(filters=4*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown2)
-        # x = layers.Conv2D(filters=4*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
-        encoderDown3 = layers.Conv2D(filters=5*self.channels, padding='same', kernel_size=(5, 5), strides=(2,2), activation='relu')(x)
+        encoderDown3 = layers.Conv2D(filters=5*self.channels, padding='same', kernel_size=(5, 5), strides=(3,3), activation='relu')(x)
         #45
         x = layers.Conv2D(filters=5*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown3)
-        # x = layers.Conv2D(filters=5*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
         encoderDown4 = layers.Conv2D(filters=6*self.channels, padding='same', kernel_size=(5, 5), strides=(3,3), activation='relu')(x)
         #15 - HERE
         x = layers.Conv2D(filters=6*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown4)
-        # x = layers.Conv2D(filters=6*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
         encoderDown5 = layers.Conv2D(filters=7*self.channels, padding='same', kernel_size=(5, 5), strides=(3,3), activation='relu')(x)
         #5
         x = layers.Conv2D(filters=7*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(encoderDown5)
-        # x = layers.Conv2D(filters=7*self.channels, padding = 'same', kernel_size=(3,3), activation='relu')(x)
         encoderDown6 = layers.Flatten()(x)
         
 
@@ -102,28 +95,22 @@ class LcpAe:
         yFormat = layers.Dense(encoderDown6.shape[1], activation='relu')(yIngress);
         decoderUp0 = layers.Reshape((x.shape[1], x.shape[2], x.shape[3]))(yFormat);
         y = layers.Conv2DTranspose(filters=7*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp0);
-        # y = layers.Conv2DTranspose(filters=7*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
         #5
         decoderUp1 = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(5,5), strides=(3,3), padding='same')(y);
         y = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp1);
-        # y = layers.Conv2DTranspose(filters=6*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
         #15
         decoderUp2 = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(5,5), strides=(3,3), padding='same')(y);
         y = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp2);
-        # y = layers.Conv2DTranspose(filters=5*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
-
+        #45
         decoderUp3 = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(5,5), strides=(3,3), padding='same')(y);
         y = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp3);
-        # y = layers.Conv2DTranspose(filters=4*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
         #135
         decoderUp4 = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(5,5), strides=(2,2), padding='same')(y);
         y = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp4);
-        # y = layers.Conv2DTranspose(filters=3*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
-
+        #270
         decoderUp5 = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(5,5), strides=(2,2), padding='same')(y);
         y = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp5);
-        # y = layers.Conv2DTranspose(filters=2*self.channels, kernel_size=(3,3), padding='same', activation='relu')(y);
-
+        #540
         decoderUp6 = layers.Conv2DTranspose(filters=self.channels, kernel_size=(5,5), strides=(2,2), padding='same')(y);
         y = layers.Conv2DTranspose(filters=self.channels, kernel_size=(3,3), padding='same', activation='relu')(decoderUp6);
         egress = layers.Conv2D(filters=self.channels, kernel_size=(3,3), strides=(1,1), padding='same', activation='sigmoid')(y);
@@ -153,49 +140,23 @@ class LcpAe:
     def buildSegmentedAutoencoder(self):
         self.encoder = Model(self.autoencoder.get_layer('main_input'), self.autoencoder.get_layer('latent_layer'))
 
-    def buildTest(self):
-        print('Dormant')
-        input1 = layers.Input((1080, 1080, 6))
-        x = layers.Conv2D(6, (3,3), padding='same', activation='relu')(input1)
-        x = layers.MaxPooling2D(pool_size=(4,4), strides=(4, 4))(x)
-        x = layers.Conv2D(6, (3,3), padding='same', activation='relu')(x)
-        x = layers.MaxPooling2D(pool_size=(2,2), strides=(2, 2))(x)
-        x = layers.Conv2D(6, (3,3), padding='same', activation='relu')(x)
-        x = layers.MaxPooling2D(pool_size=(9,9), strides=(9, 9))(x)
-        x_flat = layers.Flatten()(x)
+    # def buildNetwork2(self):
+    #     ingress = layers.Input((self.timeframes, self.m, self.n, self.channels))
+    #     x = layers.ConvLSTM2D(filters=6, kernel_size=(3,3), strides=(1,1), padding='same', return_sequences=True, activation='relu')(ingress)
+    #     x = layers.ConvLSTM2D(filters=9, kernel_size=(3,3), strides=(2,2), padding='same', return_sequences=True, activation='relu')(x)
+    #     x = layers.ConvLSTM2D(filters=12, kernel_size=(3,3), strides=(2,2), padding='same', return_sequences=True, activation='relu')(x)
+    #     x = layers.ConvLSTM2D(filters=15, kernel_size=(3,3), strides=(2,2), padding='same', return_sequences=True, activation='relu')(x)
+    #     x = layers.ConvLSTM2D(filters=18, kernel_size=(5,5), strides=(3,3), padding='same', return_sequences=True, activation='relu')(x)
+    #     x = layers.ConvLSTM2D(filters=21, kernel_size=(5,5), strides=(3,3), padding='same', return_sequences=True, activation='relu')(x)
+    #     x = layers.ConvLSTM2D(filters=24, kernel_size=(5,5), strides=(3,3), padding='same', return_sequences=True, activation='relu')(x)
+    #     x = layers.Flatten()(x)
 
-        x_model = self.x_model = Model(input1, x_flat)
+    #     z = layers.LSTM(500, return_sequences=True)(x)
+    #     z = layers.LSTM(20, return_sequences=True)(z)
+    #     z = layers.LSTM(500, return_sequences=True)(z)
 
-        # x_model.summary()
-
-        input3 = layers.Input((500))
-        y = layers.Dense(1350, activation='relu')(input3)
-        y = layers.Reshape((15, 15, 6))(y)
-        y = layers.Conv2DTranspose(filters=6, kernel_size=(9,9), strides=(9,9), padding='same', activation='relu')(y)
-        y = layers.Conv2DTranspose(filters=6, kernel_size=(3,3), strides=(1,1), padding='same', activation='relu')(y)
-        y = layers.Conv2DTranspose(filters=6, kernel_size=(2,2), strides=(2,2), padding='same', activation='relu')(y)
-        y = layers.Conv2DTranspose(filters=6, kernel_size=(3,3), strides=(1,1), padding='same', activation='relu')(y)
-        y = layers.Conv2DTranspose(filters=6, kernel_size=(4,4), strides=(4,4), padding='same', activation='relu')(y)
-        y_out = layers.Conv2DTranspose(filters=6, kernel_size=(3,3), strides=(1,1), padding='same', activation='sigmoid')(y)
-
-        y_model = self.y_model =  Model(input3, y_out)
-
-        # y_model.summary()
-
-        input2 = layers.Input((25, 1080, 1080, 6))
-        r = layers.TimeDistributed(x_model)(input2)
-        r = layers.GRU(500, return_sequences=True, name='latent_layer')(r)
-        r = layers.Dropout(0.5)(r)
-
-        r_out = layers.TimeDistributed(y_model)(r)
-
-        r_model =  Model(input2, r_out)
-
-        # r_model.summary()
-
-        return r_model
-
-
+    #     y = layers.Reshape((self.timeframes, 5, 5, 24))(z)
+        
 
 
         

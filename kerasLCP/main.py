@@ -12,6 +12,8 @@ from keras.models import load_model
 import tensorflow as tf
 import glob as glob
 
+# gpus = tf.config.experimental.list_physical_devices('GPU') 
+# tf.config.experimental.set_memory_growth(gpus[0], True)
 
 def main():
     handshake();
