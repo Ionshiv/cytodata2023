@@ -32,7 +32,7 @@ class LcpGenerator:
             batch = [];
             batch_files = np.random.choice(self.validpath, size = self.batch_size, replace=False);
             for i, seqpath in enumerate(batch_files):
-                seq = self.getImage(seqpath + '/sequence.npy')
+                seq = self.getImage(seqpath + '/*')
                 batch += [seq]
             batch_x = np.array(batch)
             batch_y = np.array(batch.copy())
@@ -69,10 +69,25 @@ class LcpGenerator:
 
 
     def getImage(self, impath):
-        npImage = np.load(impath).astype(float);
+        # npImage = np.load(impath).astype(float);
+        npdata = self.load_data(impath)
         # npImage = npImage/65535;
         # npImage = np.reshape(npImage, (1, npImage.shape[0], npImage.shape[1], npImage.shape[2], npImage.shape[3]))
-        return npImage;
+        return npdata;
+
+    def load_data(self, impath):
+        impath = sorted(glob.glob(impath))
+        npseqout = []
+        for i, seqpath in enumerate(impath):
+            npseqin = np.load(seqpath)
+            npseqin = np.reshape(npseqin, (npseqin[0], 1080, 1080, 1))
+            if i == 0:
+                npseqout = npseqin
+            else:
+                npseqout = np.concatenate((npseqout, npseqin), 3)
+        return npseqout
+
+
 
     def onlineTraining(self):
         # while True:
