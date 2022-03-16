@@ -60,12 +60,12 @@ class Stacker:
                         colstr = str(j+j2)
                     dataSeq = self.makeSequence(self.inpath_exp143 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch',1 , 25, 6)
                     # Stacker.saveim(self.outpath_exp143 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
+                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
+                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
+                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
+                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
+                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
+                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
 
     def run147(self):
         #exp 147 r_17-18s1 c3-25s2 ch6
@@ -131,12 +131,12 @@ class Stacker:
                     colstr = str(j)
                 dataSeq = self.repairSequence(self.inpath_exp180 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', self.inpath_exp183 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 1, 24, 1, 3, 6)
                 # Stacker.saveim(self.outpath_exp180 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
+                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
+                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
+                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
+                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
+                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
+                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
 
 
     def loadim(inpath: str):
