@@ -62,9 +62,7 @@ class Stacker:
                     # Stacker.saveim(self.outpath_exp143 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
                     nanbool = False
                     for i2 in range(5):
-                        if np.isnan(dataSeq[i2]):
-                            nanbool = True
-                        elif np.isnan(dataSeq[i2]):
+                        if np.any(np.isnan(dataSeq[i2])):
                             nanbool = True
                         else:
                             nanbool = False
@@ -106,10 +104,8 @@ class Stacker:
                 # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'sequence', dataSeq)
                 nanbool = False
                 for i2 in range(5):
-                    if np.isnan(dataSeq[i2]):
-                        nanbool = True
-                    elif np.isnan(dataSeq[i2]):
-                        nanbool = True
+                    if np.any(np.isnan(dataSeq[i2])):
+                            nanbool = True
                     else:
                         nanbool = False
                 if not nanbool:
@@ -155,10 +151,8 @@ class Stacker:
                 # Stacker.saveim(self.outpath_exp180 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
                 nanbool = False
                 for i2 in range(5):
-                    if np.isnan(dataSeq[i2]):
-                        nanbool = True
-                    elif np.isnan(dataSeq[i2]):
-                        nanbool = True
+                    if np.any(np.isnan(dataSeq[i2])):
+                            nanbool = True
                     else:
                         nanbool = False
                 if not nanbool:
