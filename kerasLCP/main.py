@@ -18,7 +18,7 @@ import glob as glob
 def main():
     handshake();
     model_type = 'exp147'
-    epochs = 30
+    epochs = 60
     model_name = model_type + '_epochs_' + str(epochs)
     class_name = 'CRAE_arch'
     batch_size = 1
