@@ -45,7 +45,8 @@ class LcpAe:
     def compileAutoencoder(self):
         # self.encoder.compile(optimizer='adam', loss='binary_crossentropy');
         # self.decoder.compile(optimizer='adam', loss='binary_crossentropy');
-        self.autoencoder.compile(optimizer='adam', loss='mse');
+        optim = keras.optimizers.Adam(learning_rate=0.00001)
+        self.autoencoder.compile(optimizer=optim, loss='mse');
 
     def getSummaryAutoencoder(self):
         self.x_model.summary();
@@ -125,8 +126,8 @@ class LcpAe:
         recurrentEncoderWrap = layers.TimeDistributed(x_model, name='conv_timedist_layer')(recurrentIngress)
         z = bIn = layers.GRU(500, return_sequences=True)(recurrentEncoderWrap)
         z = layers.GRU(250, return_sequences=True, recurrent_dropout=0.3, dropout=0.3)(z)
-        z = latentLayer = layers.GRU(20, return_sequences=True)(z)
-        z = latent_in = layers.Input((self.timeframes, 20))
+        z = latentLayer = layers.GRU(10, return_sequences=True)(z)
+        z = latent_in = layers.Input((self.timeframes, 10))
         z = decoderIn = layers.GRU(250, return_sequences=True, dropout= 0.3, recurrent_dropout=0.3)(z)
         z = bOut = layers.GRU(500, return_sequences=True)(z)
         recurrentDecoderWrap = layers.TimeDistributed(y_model)(z);

@@ -18,10 +18,11 @@ import glob as glob
 def main():
     handshake();
     model_type = 'exp147'
-    epochs = 3
+    epochs = 30
     model_name = model_type + '_epochs_' + str(epochs)
     class_name = 'CRAE_arch'
     batch_size = 1
+
     history = runNewModel(model_name=model_name, model_type=model_type, class_name=class_name, epochs=epochs, batch_size=batch_size)
     # predArray, tlen = runTrainedModel();
     # plotPrediction(predArray=predArray)

@@ -18,7 +18,7 @@ class LcpGenerator:
             batch = [];
             batch_files = np.random.choice(self.trainpath, size = self.batch_size, replace=False);
             for i, seqpath in enumerate(batch_files):
-                seq = self.getImage(seqpath + '/sequence.npy')
+                seq = self.getImage(seqpath + '/*')
                 batch += [seq]
                 if self.input_aug:
                     seq_aug = self.augment(seq);
@@ -80,11 +80,13 @@ class LcpGenerator:
         npseqout = []
         for i, seqpath in enumerate(impath):
             npseqin = np.load(seqpath)
-            npseqin = np.reshape(npseqin, (npseqin[0], 1080, 1080, 1))
+            npseqin = np.reshape(npseqin, (npseqin.shape[0], 1080, 1080, 1))
             if i == 0:
                 npseqout = npseqin
             else:
                 npseqout = np.concatenate((npseqout, npseqin), 3)
+                # print('')
+        # print(' ', impath, np.amax(npseqout), np.amin(npseqout))
         return npseqout
 
 
