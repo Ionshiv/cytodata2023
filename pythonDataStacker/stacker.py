@@ -10,17 +10,17 @@ class Stacker:
 
     def __init__(self):
         print('+++ STACKER INNITIALIZING +++')
-        self.inpath_exp143 = '/home/jovyan/workspace/ki-database/exp143/Images/'
-        self.inpath_exp147 = '/home/jovyan/workspace/ki-database/exp147/t1/Images/'
-        self.inpath_exp147t0 = '/home/jovyan/workspace/ki-database/exp147/t0/Images/'
-        self.inpath_exp156 = '/home/jovyan/workspace/ki-database/exp156/Images/'
-        self.inpath_exp180 = '/home/jovyan/workspace/ki-database/exp180/Images/'
-        self.inpath_exp183 = '/home/jovyan/workspace/ki-database/exp183/Images/'
+        self.inpath_exp143 = '/home/jovyan/workspace/liveCellPainting/raw_data/exp143/Images/'
+        self.inpath_exp147 = '/home/jovyan/workspace/liveCellPainting/raw_data/exp147/t1/Images/'
+        self.inpath_exp147t0 = '/home/jovyan/workspace/liveCellPainting/raw_data/exp147/t0/Images/'
+        self.inpath_exp156 = '/home/jovyan/workspace/liveCellPainting/raw_data/exp156/Images/'
+        self.inpath_exp180 = '/home/jovyan/workspace/liveCellPainting/raw_data/exp180/Images/'
+        self.inpath_exp183 = '/home/jovyan/workspace/liveCellPainting/raw_data/exp183/Images/'
 
-        self.outpath_exp143 = '/home/jovyan/scratch2-shared/david/liveCellPainting/ki-database/exp143/'
-        self.outpath_exp147 = '/home/jovyan/scratch2-shared/david/liveCellPainting/ki-database/exp147/'
-        self.outpath_exp156 = '/home/jovyan/scratch2-shared/david/liveCellPainting/ki-database/exp156/'
-        self.outpath_exp180 = '/home/jovyan/scratch2-shared/david/liveCellPainting/ki-database/exp180/'
+        self.outpath_exp143 = '/home/jovyan/workspace/liveCellPainting/preprocessed_data/exp143/'
+        self.outpath_exp147 = '/home/jovyan/workspace/liveCellPainting/preprocessed_data/exp147/'
+        self.outpath_exp156 = '/home/jovyan/workspace/liveCellPainting/preprocessed_data/exp156/'
+        self.outpath_exp180 = '/home/jovyan/workspace/liveCellPainting/preprocessed_data/exp180/'
         print('+++ INNITIATING... +++')
 
 
@@ -60,12 +60,23 @@ class Stacker:
                         colstr = str(j+j2)
                     dataSeq = self.makeSequence(self.inpath_exp143 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch',1 , 25, 6)
                     # Stacker.saveim(self.outpath_exp143 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
-                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
-                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
-                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
-                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
-                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
-                    Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
+                    nanbool = False
+                    for i2 in range(5):
+                        if np.isnan(dataSeq[i2]):
+                            nanbool = True
+                        elif np.isnan(dataSeq[i2]):
+                            nanbool = True
+                        else:
+                            nanbool = False
+                    if not nanbool:
+                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
+                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
+                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
+                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
+                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
+                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
+                    else:
+                        print('has NAN')
 
     def run147(self):
         #exp 147 r_17-18s1 c3-25s2 ch6
@@ -93,12 +104,23 @@ class Stacker:
                 ch5seq = np.concatenate((ch5t0, dataSeq[5]), axis=0)
                 # dataSeq = np.concatenate((t0Frame, dataSeq), 0)
                 # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'sequence', dataSeq)
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch0', ch0seq)
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch1', ch1seq)
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch2', ch2seq)
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch3', ch3seq)
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch4', ch4seq)
-                Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch5', ch5seq)
+                nanbool = False
+                for i2 in range(5):
+                    if np.isnan(dataSeq[i2]):
+                        nanbool = True
+                    elif np.isnan(dataSeq[i2]):
+                        nanbool = True
+                    else:
+                        nanbool = False
+                if not nanbool:
+                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch0', ch0seq)
+                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch1', ch1seq)
+                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch2', ch2seq)
+                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch3', ch3seq)
+                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch4', ch4seq)
+                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch5', ch5seq)
+                else:
+                        print('has NAN')
            
     def run156(self):
         #exp 156 r3-30s1 c3-46s1 ch5
@@ -131,12 +153,21 @@ class Stacker:
                     colstr = str(j)
                 dataSeq = self.repairSequence(self.inpath_exp180 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', self.inpath_exp183 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch', 1, 24, 1, 3, 6)
                 # Stacker.saveim(self.outpath_exp180 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
-                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
-                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
-                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
-                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
-                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
-                Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
+                nanbool = False
+                for i2 in range(5):
+                    if np.isnan(dataSeq[i2]):
+                        nanbool = True
+                    elif np.isnan(dataSeq[i2]):
+                        nanbool = True
+                    else:
+                        nanbool = False
+                if not nanbool:
+                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
+                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
+                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
+                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
+                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
+                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
 
 
     def loadim(inpath: str):
