@@ -186,13 +186,13 @@ def exp_case(case, batch_size, input_aug:bool=False):
 def exp143ae(batch_size:int, input_aug:bool=False):
     print('+++ GENERATING: exp143 +++')
     # lcpGen = LcpGenerator(inpath='../data/ki-database/exp143', batch_size=batch_size)
-    lcpAutoencoder = LcpAe(24,1080,1080, 6, inpath='/scratch2-shared/david/liveCellPainting/ki-database/exp143', batch_size=batch_size, input_aug=input_aug)
+    lcpAutoencoder = LcpAe(24,1080,1080, 6, inpath='/home/jovyan/workspace/liveCellPainting/preprocessed_data/exp143', batch_size=batch_size, input_aug=input_aug)
     return lcpAutoencoder
 
 def exp147ae(batch_size:int, input_aug:bool=False):
     print('+++ GENERATING: exp147 +++')
     # lcpGen = LcpGenerator(inpath='../data/ki-database/exp147', batch_size=batch_size, input_aug=True)
-    lcpAutoencoder = LcpAe(25,1080,1080, 6, inpath='/scratch2-shared/david/liveCellPainting/ki-database/exp147', batch_size=batch_size, input_aug=input_aug)
+    lcpAutoencoder = LcpAe(25,1080,1080, 6, inpath='/home/jovyan/workspace/liveCellPainting/preprocessed_data/exp147', batch_size=batch_size, input_aug=input_aug)
     return lcpAutoencoder
 
 def exp156ae(batch_size:int, input_aug:bool=False):
@@ -204,7 +204,7 @@ def exp156ae(batch_size:int, input_aug:bool=False):
 def exp180ae(batch_size:int, input_aug:bool=False):
     print('+++ GENERATING: exp180 +++')
     # lcpGen = LcpGenerator(inpath='../data/ki-database/exp180', batch_size=batch_size)
-    lcpAutoencoder = LcpAe(25,1080,1080, 6, inpath='/scratch2-shared/david/liveCellPainting/ki-database/exp180', batch_size=batch_size, input_aug=input_aug)
+    lcpAutoencoder = LcpAe(25,1080,1080, 6, inpath='/home/jovyan/workspace/liveCellPainting/preprocessed_data/exp180', batch_size=batch_size, input_aug=input_aug)
     return lcpAutoencoder
 
 
