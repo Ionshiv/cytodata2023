@@ -29,7 +29,7 @@ class Stacker:
         switcher = {
             'exp143': self.run143,
             'exp147': self.run147,
-            'exp156': self.run156,
+            # 'exp156': self.run156,
             'exp180_3': self.run180_3,
             'all': self.runAll
         }
@@ -47,6 +47,8 @@ class Stacker:
     def run143(self):
         #exp 143 r7-28s1 c3-24s1 ch6
         print('+++++++++++++++++++++++++++++++++ PROCESSING EXP143 ++++++++++++++++++++++++++++++++++++')
+        out143 = open('/home/jovyan/workspace/liveCellPainting/exp143_corrupted_files.txt', 'w')
+        out143nonan = open('/home/jovyan/workspace/liveCellPainting/exp143_test.txt', 'w')
         for i in range(5, 29):
             if i < 10:
                 rowstr = '0' + str(i)
@@ -61,24 +63,31 @@ class Stacker:
                     dataSeq = self.makeSequence(self.inpath_exp143 + 'r' + rowstr + 'c' + colstr + 'f01p01-ch',1 , 25, 6)
                     # Stacker.saveim(self.outpath_exp143 + 'r' + rowstr + 'c' + colstr, 'sequence', dataSeq)
                     nanbool = False
+                    
                     for i2 in range(5):
                         if np.any(np.isnan(dataSeq[i2])):
                             nanbool = True
                         else:
                             nanbool = False
                     if not nanbool:
-                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
-                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
-                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
-                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
-                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
-                        Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
+                        # Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
+                        # Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
+                        # Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
+                        # Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
+                        # Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
+                        # Stacker.saveim(self.outpath_exp143 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
+                        print('TEST', file=out143nonan)
+                        print('')
                     else:
-                        print('has NAN')
+                        print(self.inpath_exp143 + 'r' + rowstr + 'c' + colstr)
+                        print(self.inpath_exp143 + 'r' + rowstr + 'c' + colstr, file = out143)
+        out143.close()
+        out143nonan.close()
 
     def run147(self):
         #exp 147 r_17-18s1 c3-25s2 ch6
         print('+++++++++++++++ PROCESSING EXP147 +++++++++++++++++++++')
+        out147 = open('/home/jovyan/workspace/liveCellPainting/exp147_corrupted_files.txt', 'w')
         for i in range(17, 19):
             for j in range(3, 27, 2):
                 if j < 10:
@@ -109,14 +118,16 @@ class Stacker:
                     else:
                         nanbool = False
                 if not nanbool:
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch0', ch0seq)
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch1', ch1seq)
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch2', ch2seq)
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch3', ch3seq)
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch4', ch4seq)
-                    Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch5', ch5seq)
+                    print('')
+                    # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch0', ch0seq)
+                    # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch1', ch1seq)
+                    # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch2', ch2seq)
+                    # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch3', ch3seq)
+                    # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch4', ch4seq)
+                    # Stacker.saveim(self.outpath_exp147 + 'r' + str(i) + 'c' + colstr, 'ch5', ch5seq)
                 else:
-                        print('has NAN')
+                        print(self.inpath_exp147 + 'r' + str(i) + 'c' + colstr, file=out147)
+        out147.close()
            
     def run156(self):
         #exp 156 r3-30s1 c3-46s1 ch5
@@ -137,6 +148,7 @@ class Stacker:
     def run180_3(self):
         #exp 180/3 r3-30s1 c3-46s1 ch6
         print('+++++++++++++++++++++++++++++++++++++++++++++ PROCESSING EXP180 AND EXP183 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        out180 = open('/home/jovyan/workspace/liveCellPainting/exp180_corrupted_files.txt', 'w')
         for i in range(3, 31):
             if i < 10:
                 rowstr = '0' + str(i)
@@ -156,12 +168,16 @@ class Stacker:
                     else:
                         nanbool = False
                 if not nanbool:
-                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
-                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
-                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
-                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
-                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
-                    Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
+                    print('')
+                    # Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch0', dataSeq[0])
+                    # Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch1', dataSeq[1])
+                    # Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch2', dataSeq[2])
+                    # Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch3', dataSeq[3])
+                    # Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch4', dataSeq[4])
+                    # Stacker.saveim(self.outpath_exp180 + 'r' + str(i) + 'c' + colstr, 'ch5', dataSeq[5])
+                else:
+                    print(self.inpath_exp180 + 'r' + rowstr + 'c' + colstr, file=out180)
+        out180.close()
 
 
     def loadim(inpath: str):

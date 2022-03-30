@@ -45,7 +45,7 @@ class LcpAe:
     def compileAutoencoder(self):
         # self.encoder.compile(optimizer='adam', loss='binary_crossentropy');
         # self.decoder.compile(optimizer='adam', loss='binary_crossentropy');
-        optim = keras.optimizers.Adam(learning_rate=0.00001)
+        optim = keras.optimizers.Adam(learning_rate=0.0001)
         self.autoencoder.compile(optimizer=optim, loss='mse');
 
     def getSummaryAutoencoder(self):
