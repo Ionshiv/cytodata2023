@@ -12,7 +12,7 @@ from keras.models import load_model
 import tensorflow as tf
 import glob as glob
 
-# gpus = tf.config.experimental.list_physical_devices('GPU') 
+# gpus = tf.config.experimental.list_physical_devices('GPU')
 # tf.config.experimental.set_memory_growth(gpus[0], True)
 
 def main():
@@ -22,15 +22,18 @@ def main():
     model_name = model_type + '_epochs_' + str(epochs)
     class_name = 'CRAE_arch'
     batch_size = 1
-
-    history = runNewModel(model_name=model_name, model_type=model_type, class_name=class_name, epochs=epochs, batch_size=batch_size)
-    # predArray, tlen = runTrainedModel();
+    # predin = '/scratch-shared/david/'
+    # history = runNewModel(model_name=model_name, model_type=model_type, class_name=class_name, epochs=epochs, batch_size=batch_size)
+    booleanout = runTrainedModel('/scratch-shared/david/model_data/CRAE_arch/exp180_epochs_8_D20221931_T051920encoderSegment')
+    # predArray, tlen = runTrainedModel(r'\home\jovyan\scratch-shared\david\model_data\CRAE_arch\exp180_epochs_8_D20221931_T051920encoderSegment')
+    # for i, feat in enumerate(predArray):
+    #     np.save('/scratch2-shared/david/model_data/exp180_epochs_8_featureNumber_'+str(i), feat)
     # plotPrediction(predArray=predArray)
     # a = np.zeros((25, 100))
     # b = a[:,99]
     # plotAllVectors()
     # plotClusters()
-    
+
 
     endshake();
 
@@ -64,7 +67,7 @@ def plot_history(history, model_name, class_name):
     plt.close()
 
 def buildAutoencoder(case:str, batch_size:int, input_aug:bool=False):
-    
+
     lcpAutoencoder = exp_case(case, batch_size, input_aug=input_aug);
     return lcpAutoencoder
 
@@ -85,26 +88,44 @@ def runNewModel(model_type:str, model_name:str, class_name:str, epochs:int, batc
     return history
 
 def runTrainedModel(enIn):
-    encoder = load_model(enIn[0])
+    encoder = load_model(enIn)
     encoder.summary()
     encoder.compile(optimizer='Adam', loss='mse')
     # predGen = LcpGenerator(inpath='../data/ki-database/exp147', batch_size = 1, input_aug=False)
     predArray = []
-    metaArray = []
-    loadpath = sorted(glob.glob(enIn[1]+'/*'))
+    # metaArray = []
+    loadpath = sorted(glob.glob('/scratch2-shared/david/liveCellPainting/ki-database/exp180/*'))
+    # print(loadpath)
     tlen = 0
     for i, inpath in enumerate(loadpath):
         print(i)
         print(inpath)
-        npseq = np.load(inpath+'/sequence.npy').astype(float)
-        npseq = npseq/65535
-        tlen = npseq[0]
+        print(inpath[59:])
+        print(inpath[58:])
+        print(len(inpath))
+        seq0 = np.load(inpath+'/ch0.npy')
+        seq1 = np.load(inpath+'/ch1.npy')
+        seq2 = np.load(inpath+'/ch2.npy')
+        seq3 = np.load(inpath+'/ch3.npy')
+        seq4 = np.load(inpath+'/ch4.npy')
+        seq5 = np.load(inpath+'/ch5.npy')
+        npseq = np.reshape(seq0, (seq0.shape[0], 1080, 1080, 1))
+        npseq = np.concatenate((npseq, np.reshape(seq1, (seq0.shape[0],1080,1080,1))), 3)
+        npseq = np.concatenate((npseq, np.reshape(seq2, (seq0.shape[0],1080,1080,1))), 3)
+        npseq = np.concatenate((npseq, np.reshape(seq3, (seq0.shape[0],1080,1080,1))), 3)
+        npseq = np.concatenate((npseq, np.reshape(seq4, (seq0.shape[0],1080,1080,1))), 3)
+        npseq = np.concatenate((npseq, np.reshape(seq5, (seq0.shape[0],1080,1080,1))), 3)
+        tlen = npseq.shape[0]
+        print(npseq.shape)
         npseq = np.reshape(npseq, (1, npseq.shape[0], npseq.shape[1], npseq.shape[2], npseq.shape[3]))
         print(npseq.shape)
         nppred = encoder.predict(npseq)
-        predArray += [nppred]
-        metaArray += [inpath]
-    return predArray, tlen, metaArray
+        if not os.path.exists('/scratch2-shared/david/model_data/exp180/'):
+            os.makedirs('/scratch2-shared/david/model_data/exp180/')
+        np.save('/scratch2-shared/david/model_data/exp180/'+inpath[59:], nppred)
+        # predArray += [nppred]
+        # metaArray += [inpath]
+    return True
 
 def plotPrediction(predArray, tlen, expname):
     t = range(tlen)
@@ -130,7 +151,7 @@ def plotPrediction(predArray, tlen, expname):
             os.makedirs(plot_path)
         plt.savefig(plot_path + plot_name, format='png')
         plt.close()
-   
+
 
 def plotAllVectors():
     print('')
@@ -168,9 +189,9 @@ def plotClusters():
                 plt.close()
 
 
-        
 
-    
+
+
 
 def exp_case(case, batch_size, input_aug:bool=False):
     # lcpAutoencoder = LcpAe();

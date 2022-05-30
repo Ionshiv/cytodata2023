@@ -1,0 +1,1548 @@
++++INNITIALIZING SESSION+++
+Model: "model_2"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ main_input (InputLayer)     [(None, 25, 1080, 1080,   0         
+                             6)]                                 
+                                                                 
+ conv_timedist_layer (TimeDi  (None, 25, 1050)         144360    
+ stributed)                                                      
+                                                                 
+ gru (GRU)                   (None, 25, 500)           2328000   
+                                                                 
+ gru_1 (GRU)                 (None, 25, 250)           564000    
+                                                                 
+ gru_2 (GRU)                 (None, 25, 10)            7860      
+                                                                 
+=================================================================
+Total params: 3,044,220
+Trainable params: 3,044,220
+Non-trainable params: 0
+_________________________________________________________________
+0
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c03
+r10c03
+/r10c03
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+1
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c04
+r10c04
+/r10c04
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+2
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c05
+r10c05
+/r10c05
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+3
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c06
+r10c06
+/r10c06
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+4
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c07
+r10c07
+/r10c07
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+5
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c08
+r10c08
+/r10c08
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+6
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c09
+r10c09
+/r10c09
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+7
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c10
+r10c10
+/r10c10
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+8
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c11
+r10c11
+/r10c11
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+9
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c12
+r10c12
+/r10c12
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+10
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c13
+r10c13
+/r10c13
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+11
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c14
+r10c14
+/r10c14
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+12
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c15
+r10c15
+/r10c15
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+13
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c16
+r10c16
+/r10c16
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+14
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c17
+r10c17
+/r10c17
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+15
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c18
+r10c18
+/r10c18
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+16
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c19
+r10c19
+/r10c19
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+17
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c20
+r10c20
+/r10c20
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+18
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c21
+r10c21
+/r10c21
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+19
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c22
+r10c22
+/r10c22
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+20
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c23
+r10c23
+/r10c23
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+21
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c24
+r10c24
+/r10c24
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+22
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c25
+r10c25
+/r10c25
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+23
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c26
+r10c26
+/r10c26
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+24
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c27
+r10c27
+/r10c27
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+25
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c28
+r10c28
+/r10c28
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+26
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c29
+r10c29
+/r10c29
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+27
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c30
+r10c30
+/r10c30
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+28
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c31
+r10c31
+/r10c31
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+29
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c32
+r10c32
+/r10c32
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+30
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c33
+r10c33
+/r10c33
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+31
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c34
+r10c34
+/r10c34
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+32
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c35
+r10c35
+/r10c35
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+33
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c36
+r10c36
+/r10c36
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+34
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c37
+r10c37
+/r10c37
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+35
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c38
+r10c38
+/r10c38
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+36
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c39
+r10c39
+/r10c39
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+37
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c40
+r10c40
+/r10c40
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+38
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c41
+r10c41
+/r10c41
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+39
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c42
+r10c42
+/r10c42
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+40
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c43
+r10c43
+/r10c43
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+41
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c44
+r10c44
+/r10c44
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+42
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c45
+r10c45
+/r10c45
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+43
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r10c46
+r10c46
+/r10c46
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+44
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c03
+r11c03
+/r11c03
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+45
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c04
+r11c04
+/r11c04
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+46
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c05
+r11c05
+/r11c05
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+47
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c06
+r11c06
+/r11c06
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+48
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c07
+r11c07
+/r11c07
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+49
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c08
+r11c08
+/r11c08
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+50
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c09
+r11c09
+/r11c09
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+51
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c10
+r11c10
+/r11c10
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+52
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c11
+r11c11
+/r11c11
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+53
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c12
+r11c12
+/r11c12
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+54
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c13
+r11c13
+/r11c13
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+55
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c14
+r11c14
+/r11c14
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+56
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c15
+r11c15
+/r11c15
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+57
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c16
+r11c16
+/r11c16
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+58
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c17
+r11c17
+/r11c17
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+59
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c18
+r11c18
+/r11c18
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+60
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c19
+r11c19
+/r11c19
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+61
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c20
+r11c20
+/r11c20
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+62
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c21
+r11c21
+/r11c21
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+63
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c22
+r11c22
+/r11c22
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+64
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c23
+r11c23
+/r11c23
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+65
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c24
+r11c24
+/r11c24
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+66
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c25
+r11c25
+/r11c25
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+67
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c26
+r11c26
+/r11c26
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+68
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c27
+r11c27
+/r11c27
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+69
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c28
+r11c28
+/r11c28
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+70
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c29
+r11c29
+/r11c29
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+71
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c30
+r11c30
+/r11c30
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+72
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c31
+r11c31
+/r11c31
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+73
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c32
+r11c32
+/r11c32
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+74
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c33
+r11c33
+/r11c33
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+75
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c34
+r11c34
+/r11c34
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+76
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c35
+r11c35
+/r11c35
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+77
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c36
+r11c36
+/r11c36
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+78
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c37
+r11c37
+/r11c37
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+79
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c38
+r11c38
+/r11c38
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+80
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c39
+r11c39
+/r11c39
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+81
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c40
+r11c40
+/r11c40
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+82
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c41
+r11c41
+/r11c41
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+83
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c42
+r11c42
+/r11c42
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+84
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c43
+r11c43
+/r11c43
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+85
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c44
+r11c44
+/r11c44
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+86
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c45
+r11c45
+/r11c45
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+87
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r11c46
+r11c46
+/r11c46
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+88
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c03
+r12c03
+/r12c03
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+89
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c04
+r12c04
+/r12c04
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+90
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c05
+r12c05
+/r12c05
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+91
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c06
+r12c06
+/r12c06
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+92
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c07
+r12c07
+/r12c07
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+93
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c08
+r12c08
+/r12c08
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+94
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c09
+r12c09
+/r12c09
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+95
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c10
+r12c10
+/r12c10
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+96
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c11
+r12c11
+/r12c11
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+97
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c12
+r12c12
+/r12c12
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+98
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c13
+r12c13
+/r12c13
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+99
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c14
+r12c14
+/r12c14
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+100
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c15
+r12c15
+/r12c15
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+101
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c16
+r12c16
+/r12c16
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+102
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c17
+r12c17
+/r12c17
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+103
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c18
+r12c18
+/r12c18
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+104
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c19
+r12c19
+/r12c19
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+105
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c20
+r12c20
+/r12c20
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+106
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c21
+r12c21
+/r12c21
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+107
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c22
+r12c22
+/r12c22
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+108
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c23
+r12c23
+/r12c23
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+109
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c24
+r12c24
+/r12c24
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+110
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c25
+r12c25
+/r12c25
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+111
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c26
+r12c26
+/r12c26
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+112
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c27
+r12c27
+/r12c27
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+113
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c28
+r12c28
+/r12c28
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+114
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c29
+r12c29
+/r12c29
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+115
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c30
+r12c30
+/r12c30
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+116
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c31
+r12c31
+/r12c31
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+117
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c32
+r12c32
+/r12c32
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+118
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c33
+r12c33
+/r12c33
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+119
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c34
+r12c34
+/r12c34
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+120
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c35
+r12c35
+/r12c35
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+121
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c36
+r12c36
+/r12c36
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+122
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c37
+r12c37
+/r12c37
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+123
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c38
+r12c38
+/r12c38
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+124
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c39
+r12c39
+/r12c39
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+125
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c40
+r12c40
+/r12c40
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+126
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c41
+r12c41
+/r12c41
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+127
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c42
+r12c42
+/r12c42
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+128
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c43
+r12c43
+/r12c43
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+129
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c44
+r12c44
+/r12c44
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+130
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c45
+r12c45
+/r12c45
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+131
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r12c46
+r12c46
+/r12c46
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+132
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c03
+r13c03
+/r13c03
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+133
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c04
+r13c04
+/r13c04
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+134
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c05
+r13c05
+/r13c05
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+135
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c06
+r13c06
+/r13c06
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+136
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c07
+r13c07
+/r13c07
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+137
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c08
+r13c08
+/r13c08
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+138
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c09
+r13c09
+/r13c09
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+139
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c10
+r13c10
+/r13c10
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+140
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c11
+r13c11
+/r13c11
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+141
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c12
+r13c12
+/r13c12
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+142
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c13
+r13c13
+/r13c13
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+143
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c14
+r13c14
+/r13c14
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+144
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c15
+r13c15
+/r13c15
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+145
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c16
+r13c16
+/r13c16
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+146
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c17
+r13c17
+/r13c17
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+147
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c18
+r13c18
+/r13c18
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+148
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c19
+r13c19
+/r13c19
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+149
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c20
+r13c20
+/r13c20
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+150
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c21
+r13c21
+/r13c21
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+151
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c22
+r13c22
+/r13c22
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+152
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c23
+r13c23
+/r13c23
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+153
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c24
+r13c24
+/r13c24
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+154
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c25
+r13c25
+/r13c25
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+155
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c26
+r13c26
+/r13c26
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+156
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c27
+r13c27
+/r13c27
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+157
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c28
+r13c28
+/r13c28
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+158
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c29
+r13c29
+/r13c29
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+159
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c30
+r13c30
+/r13c30
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+160
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c31
+r13c31
+/r13c31
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+161
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c32
+r13c32
+/r13c32
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+162
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c33
+r13c33
+/r13c33
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+163
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c34
+r13c34
+/r13c34
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+164
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c35
+r13c35
+/r13c35
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+165
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c36
+r13c36
+/r13c36
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+166
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c37
+r13c37
+/r13c37
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+167
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c38
+r13c38
+/r13c38
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+168
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c39
+r13c39
+/r13c39
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+169
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c40
+r13c40
+/r13c40
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+170
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c41
+r13c41
+/r13c41
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+171
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c42
+r13c42
+/r13c42
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+172
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c43
+r13c43
+/r13c43
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+173
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c44
+r13c44
+/r13c44
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+174
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c45
+r13c45
+/r13c45
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+175
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r13c46
+r13c46
+/r13c46
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+176
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c03
+r14c03
+/r14c03
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+177
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c04
+r14c04
+/r14c04
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+178
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c05
+r14c05
+/r14c05
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+179
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c06
+r14c06
+/r14c06
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+180
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c07
+r14c07
+/r14c07
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+181
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c08
+r14c08
+/r14c08
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+182
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c09
+r14c09
+/r14c09
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+183
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c10
+r14c10
+/r14c10
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+184
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c11
+r14c11
+/r14c11
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+185
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c12
+r14c12
+/r14c12
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+186
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c13
+r14c13
+/r14c13
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+187
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c14
+r14c14
+/r14c14
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+188
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c15
+r14c15
+/r14c15
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+189
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c16
+r14c16
+/r14c16
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+190
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c17
+r14c17
+/r14c17
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+191
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c18
+r14c18
+/r14c18
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+192
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c19
+r14c19
+/r14c19
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+193
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c20
+r14c20
+/r14c20
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+194
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c21
+r14c21
+/r14c21
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+195
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c22
+r14c22
+/r14c22
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+196
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c23
+r14c23
+/r14c23
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+197
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c24
+r14c24
+/r14c24
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+198
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c25
+r14c25
+/r14c25
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+199
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c26
+r14c26
+/r14c26
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+200
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c27
+r14c27
+/r14c27
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+201
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c28
+r14c28
+/r14c28
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+202
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c29
+r14c29
+/r14c29
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+203
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c30
+r14c30
+/r14c30
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+204
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c31
+r14c31
+/r14c31
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+205
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c32
+r14c32
+/r14c32
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+206
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c33
+r14c33
+/r14c33
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+207
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c34
+r14c34
+/r14c34
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+208
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c35
+r14c35
+/r14c35
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+209
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c36
+r14c36
+/r14c36
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+210
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c37
+r14c37
+/r14c37
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+211
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c38
+r14c38
+/r14c38
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+212
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c39
+r14c39
+/r14c39
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+213
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c40
+r14c40
+/r14c40
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+214
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c41
+r14c41
+/r14c41
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+215
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c42
+r14c42
+/r14c42
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+216
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c43
+r14c43
+/r14c43
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
+217
+/scratch2-shared/david/liveCellPainting/ki-database/exp180/r14c44
+r14c44
+/r14c44
+65
+(25, 1080, 1080, 6)
+(1, 25, 1080, 1080, 6)
