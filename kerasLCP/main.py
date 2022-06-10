@@ -3,6 +3,7 @@ import os as os
 from datetime import datetime
 from tensorflow.python.ops.control_flow_ops import case
 from lcpae import LcpAe
+from lcppca import LcpPca
 from lcpgenerator import LcpGenerator
 import matplotlib.pyplot as plt
 from tensorflow import keras
@@ -11,6 +12,7 @@ from keras.models import Model
 from keras.models import load_model
 import tensorflow as tf
 import glob as glob
+import plotly.express as px
 
 # gpus = tf.config.experimental.list_physical_devices('GPU')
 # tf.config.experimental.set_memory_growth(gpus[0], True)
@@ -22,9 +24,10 @@ def main():
     model_name = model_type + '_epochs_' + str(epochs)
     class_name = 'CRAE_arch'
     batch_size = 1
+    LcpPca()
     # predin = '/scratch-shared/david/'
     # history = runNewModel(model_name=model_name, model_type=model_type, class_name=class_name, epochs=epochs, batch_size=batch_size)
-    booleanout = runTrainedModel('/scratch-shared/david/model_data/CRAE_arch/exp180_epochs_8_D20221931_T051920encoderSegment')
+    # booleanout = runTrainedModel('/scratch-shared/david/model_data/CRAE_arch/exp180_epochs_8_D20221931_T051920encoderSegment')
     # predArray, tlen = runTrainedModel(r'\home\jovyan\scratch-shared\david\model_data\CRAE_arch\exp180_epochs_8_D20221931_T051920encoderSegment')
     # for i, feat in enumerate(predArray):
     #     np.save('/scratch2-shared/david/model_data/exp180_epochs_8_featureNumber_'+str(i), feat)
