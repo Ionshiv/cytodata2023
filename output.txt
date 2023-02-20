@@ -1,0 +1,5 @@
+starting run
+Files already downloaded and verified
+Files already downloaded and verified
+constructing simpleCAE
+<SimpleCAE.simpleCAE object at 0x7fc8da68f550>
