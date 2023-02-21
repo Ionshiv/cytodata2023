@@ -41,7 +41,7 @@ class simpleCAE(nn.Module):
         # add transpose conv layers, with relu activation function
         x = f.relu(self.t_conv1(x))
         # output layer (with sigmoid for scaling from 0 to 1)
-        x = f.sigmoid(self.t_conv2(x))
+        x = tch.sigmoid(self.t_conv2(x))
                 
         return x
         

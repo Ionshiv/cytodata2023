@@ -14,8 +14,9 @@ from datetime import datetime as dtime
 
 def main():
     print('starting run')
-    print(dtime.now().strftime('%H:%M:%S'))
+    # print(dtime.now().strftime('%H:%M:%S'))
     device = tch.device('cuda')
+    print('Torch Cuda is Available:\t {}'.format(tch.cuda.is_available()))
     tensorTF = transforms.ToTensor()
     # dataset = datasets.MNIST(root = "./mnistDATA", train = True, download=True, transform=tensorTF)
     train_data = datasets.CIFAR10(root='data', train=True, download=True, transform=tensorTF)
@@ -27,7 +28,7 @@ def main():
     model = scae()
     print(model)
     training(model, train_loader)
-    print(dtime.now().strftime('%H:%M:%S'))
+    # print(dtime.now().strftime('%H:%M:%S'))
 
 
 def training(model, train_loader):
