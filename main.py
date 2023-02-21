@@ -10,9 +10,11 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import transforms
 from torchvision import datasets
 from SimpleCAE import simpleCAE as scae
+from datetime import datetime as dtime
 
 def main():
     print('starting run')
+    print(dtime.now().strftime('%H:%M:%S'))
     device = tch.device('cuda')
     tensorTF = transforms.ToTensor()
     # dataset = datasets.MNIST(root = "./mnistDATA", train = True, download=True, transform=tensorTF)
@@ -25,6 +27,7 @@ def main():
     model = scae()
     print(model)
     training(model, train_loader)
+    print(dtime.now().strftime('%H:%M:%S'))
 
 
 def training(model, train_loader):
