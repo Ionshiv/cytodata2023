@@ -36,7 +36,7 @@ def main():
     input_dim = data_train.iloc[5].x.size(1)
     print('Input Dimensions: ', input_dim)
     #Loss, Epochs, Batch-size
-    num_epochs = 5
+    num_epochs = 100
     batch_size = 32*8
     sched_size = int(num_epochs//5)
     weight_decay = 1e-4
