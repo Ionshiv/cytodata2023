@@ -1,54 +1,59 @@
 import numpy as np
 import torch as tch
-import tensorflow as tf
-from torch import nn as nn
-from torch.nn import functional as f
-from torch import optim as optim
-from matplotlib import pyplot as plt
-import seaborn as sns
-from torch.utils.data import DataLoader
-from torchvision import transforms
-from torchvision import datasets
-from SimpleCAE import simpleCAE as scae
+import torch.nn as nn
+import torch.optim as optim
 
+
+from torch_geometric.nn import GCNConv, GATConv, summary as gsummary, global_mean_pool, global_max_pool
+from torch_geometric.data import Data#, DataLoader
+from torch_geometric.loader import DataLoader
+from torch_geometric.datasets import MoleculeNet
+from torch_geometric.utils import dropout_adj
+
+from rdkit import Chem
+from rdkit.Chem import AllChem
+from rdkit.Chem import Descriptors
+from rdkit.Chem import Lipinski
+from matplotlib import pyplot as plt
+from simpleGNN import simpleGNN
+from graphmake import GraphMake
 
 def main():
     print('starting run')
-    print('tensorflow verison:\t{}'.format(tf.version.VERSION))
-    print('tensorflow Cuda is Available:\t{}\tforcuda:{}'.format(tf.config.list_physical_devices('GPU'), tf.test.is_built_with_cuda))
-    # print(dtime.now().strftime('%H:%M:%S'))
-    device = tch.device('cuda')
     print('Torch Cuda is Available:\t{}'.format(tch.cuda.is_available()))
-    tensorTF = transforms.ToTensor()
-    # dataset = datasets.MNIST(root = "./mnistDATA", train = True, download=True, transform=tensorTF)
-    train_data = datasets.CIFAR10(root='data', train=True, download=True, transform=tensorTF)
-    test_data = datasets.CIFAR10(root='data', train=False, download=True, transform=tensorTF)                          
-    train_loader = DataLoader(dataset = train_data, batch_size = 32, num_workers=0)
-    test_loader = DataLoader(dataset=test_data, batch_size=32, num_workers=0)
+    device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
+
+    gmake = GraphMake('data/solubility.csv')
+    data_pyg = gmake.getPyG()
+    n_train = int(len(data_pyg) * 0.7) # 70% of data for training and 30% for testing
+    indices = np.arange(n_train)
+    data_train = data_pyg[indices[:n_train]]
+    data_train.reset_index(drop=True, inplace=True)
+    data_test = data_pyg[~data_pyg.isin(data_train)]
+    data_test.reset_index(drop=True, inplace=True)
 
 
-    model = scae()
-    print(model)
-    training(model, train_loader)
-    # print(dtime.now().strftime('%H:%M:%S'))
+    input_dim = data_train.iloc[5].x.size(1)
+    print('Input Dimensions: ', input_dim)
+    #Loss, Epochs, Batch-size
+    num_epochs = 5
+    batch_size = 32*8
+    sched_size = int(num_epochs//5)
+    weight_decay = 1e-4
+    gamma = 0.81
+    criterion = nn.MSELoss()
+    #Data Loaders to handle the graphs we made earlier
+    t_loader = DataLoader(data_train, batch_size=batch_size, shuffle=True)
+    v_loader = DataLoader(data_test, batch_size=batch_size, shuffle=True)
+    model = simpleGNN(input_dim).to(device)
+    optimizer = optim.AdamW(model.parameters()
+                       , lr=0.001
+                       , weight_decay= weight_decay*15
+                       )  # Adjust learning rate as needed
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=sched_size, gamma=gamma)
+    model, train_losses, val_losses = model.fitGNN(t_loader, v_loader, num_epochs, optimizer, criterion, scheduler)
 
 
-def training(model, train_loader):
-    criterion = nn.BCELoss()
-    optimizer = optim.Adam(model.parameters(), lr = 0.001)
-    epochs = 1
-    for epoch in range(1, epochs+1):
-        train_loss = 0.0
-        for data in train_loader:
-            images, _ = data
-            optimizer.zero_grad()
-            outputs = model(images)
-            loss = criterion(outputs, images)
-            loss.backward()
-            optimizer.step()
-            train_loss += loss.item()*images.size(0)
-        train_loss = train_loss/len(train_loader)
-        print('Epoch: {} \t Training Loss: {:.6f}'.format(epoch, train_loss))
 
 
 
