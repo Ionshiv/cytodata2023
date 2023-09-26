@@ -46,6 +46,7 @@ class simpleGNN(nn.Module):
         else:
             self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
         # simpleGNN Layers
+        super(simpleGNN, self).__init__()
         self.conv1 = GATConv(input_dim, 32, heads=1, concat=True)  # Single attention head
         self.conv2 = GATConv(32, 32, heads=2, concat=True)  # Single attention head
         self.conv3 = GATConv(64, 64, heads=2, concat=True)
@@ -81,7 +82,7 @@ class simpleGNN(nn.Module):
                 batch.to(self.device)
                 optimizer.zero_grad()
                 # Use Batch Data object in forward pass
-                outputs = self.simpleGNN(batch.x.float(), batch.edge_index, batch.batch)
+                outputs = self(batch.x.float(), batch.edge_index, batch.batch)
                 loss = criterion(outputs, batch.y)
 
                 l1_lambda = 0.0001
@@ -107,6 +108,8 @@ class simpleGNN(nn.Module):
             avg_val_loss = sum(val_loss_items) / len(val_loss_items)
             val_losses.append(avg_val_loss)
             if epoch % 100 == 0:
+                print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {train_losses[-1]:.4f}, Val Loss: {avg_val_loss:.4f}')
+            elif epoch == num_epochs:
                 print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {train_losses[-1]:.4f}, Val Loss: {avg_val_loss:.4f}')
             scheduler.step()
         return self, train_losses, val_losses
