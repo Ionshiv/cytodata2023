@@ -1,22 +1,24 @@
 import numpy as np
 import torch as tch
+import tensorflow as tf
 from torch import nn as nn
 from torch.nn import functional as f
 from torch import optim as optim
 from matplotlib import pyplot as plt
 import seaborn as sns
 from torch.utils.data import DataLoader
-from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import transforms
 from torchvision import datasets
 from SimpleCAE import simpleCAE as scae
-from datetime import datetime as dtime
+
 
 def main():
     print('starting run')
+    print('tensorflow verison:\t{}'.format(tf.version.VERSION))
+    print('tensorflow Cuda is Available:\t{}\tforcuda:{}'.format(tf.config.list_physical_devices('GPU'), tf.test.is_built_with_cuda))
     # print(dtime.now().strftime('%H:%M:%S'))
     device = tch.device('cuda')
-    print('Torch Cuda is Available:\t {}'.format(tch.cuda.is_available()))
+    print('Torch Cuda is Available:\t{}'.format(tch.cuda.is_available()))
     tensorTF = transforms.ToTensor()
     # dataset = datasets.MNIST(root = "./mnistDATA", train = True, download=True, transform=tensorTF)
     train_data = datasets.CIFAR10(root='data', train=True, download=True, transform=tensorTF)
@@ -34,7 +36,7 @@ def main():
 def training(model, train_loader):
     criterion = nn.BCELoss()
     optimizer = optim.Adam(model.parameters(), lr = 0.001)
-    epochs = 5
+    epochs = 1
     for epoch in range(1, epochs+1):
         train_loss = 0.0
         for data in train_loader:

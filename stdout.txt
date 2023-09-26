@@ -1,0 +1,15 @@
+starting run
+tensorflow verison:	2.12.0-rc0
+tensorflow Cuda is Available:	[PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]	forcuda:<function is_built_with_cuda at 0x7fa277ec10d0>
+Torch Cuda is Available:	True
+Files already downloaded and verified
+Files already downloaded and verified
+constructing simpleCAE
+simpleCAE(
+  (conv1): Conv2d(3, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (conv2): Conv2d(16, 4, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (pool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (t_conv1): ConvTranspose2d(4, 16, kernel_size=(2, 2), stride=(2, 2))
+  (t_conv2): ConvTranspose2d(16, 3, kernel_size=(2, 2), stride=(2, 2))
+)
+Epoch: 1 	 Training Loss: 18.956870
