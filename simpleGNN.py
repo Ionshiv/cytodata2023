@@ -72,6 +72,8 @@ class simpleGNN(nn.Module):
         return x
 
     def fitGNN(self, t_loader, v_loader, num_epochs, optimizer, criterion, scheduler):
+        self.t_loader = t_loader
+        self.v_loader = v_loader
         train_losses = []
         val_losses = []
         for epoch in range(num_epochs):
@@ -107,14 +109,29 @@ class simpleGNN(nn.Module):
 
             avg_val_loss = sum(val_loss_items) / len(val_loss_items)
             val_losses.append(avg_val_loss)
-            if epoch % 100 == 0:
+            if epoch % 5 == 0:
                 print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {train_losses[-1]:.4f}, Val Loss: {avg_val_loss:.4f}')
-            elif epoch == num_epochs:
+            elif epoch == int(num_epochs-1):
                 print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {train_losses[-1]:.4f}, Val Loss: {avg_val_loss:.4f}')
             scheduler.step()
         return self, train_losses, val_losses
-    
-    def plot_history(train_losses, val_losses, model_name):
+
+    def print_eval(self):
+        self.eval()
+        all_preds = []
+        all_labels = []
+        with tch.no_grad():
+            for v_batch in self.v_loader:
+                v_batch.to(self.device)
+                test_outputs = self(v_batch.x, v_batch.edge_index, v_batch.batch)
+                all_preds.extend(test_outputs.tolist())
+                all_labels.extend(v_batch.y.tolist())
+        all_preds_tensor = tch.tensor(all_preds)
+        all_labels_tensor = tch.tensor(all_labels)
+        gnn_mse = mean_squared_error(all_labels_tensor, all_preds_tensor)
+        print(f'GNN2 Regression: MSE = {gnn_mse:.3f}')
+
+    def plot_history(self, train_losses, val_losses, model_name):
         fig = plt.figure(figsize=(15, 5), facecolor='w')
         ax = fig.add_subplot(121)
         ax.plot(train_losses)
@@ -127,7 +144,7 @@ class simpleGNN(nn.Module):
         ax.set(title=model_name + ': Log model loss', ylabel='Log loss', xlabel='Epoch')
         ax.legend(['Train', 'Test'], loc='upper right')
         plt.savefig('simpleGNNoutput.png')
-        plt.show()
+        # plt.show()
         plt.close()
 
     def weights_init(m):

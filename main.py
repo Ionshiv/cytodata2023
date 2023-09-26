@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import torch as tch
 import torch.nn as nn
 import torch.optim as optim
@@ -52,7 +53,11 @@ def main():
                        )  # Adjust learning rate as needed
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=sched_size, gamma=gamma)
     model, train_losses, val_losses = model.fitGNN(t_loader, v_loader, num_epochs, optimizer, criterion, scheduler)
-
+    df = pd.DataFrame(train_losses, columns=['train_losses'])
+    df['validation_losses'] = val_losses
+    df.to_csv('output.csv', sep=';')
+    model.plot_history(train_losses, val_losses, 'simple GNN')
+    model.print_eval()
 
 
 
