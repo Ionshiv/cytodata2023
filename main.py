@@ -16,6 +16,7 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import Descriptors
 from rdkit.Chem import Lipinski
 from matplotlib import pyplot as plt
+from labbGNN import labbGNN
 from simpleGNN import simpleGNN
 from graphmake import GraphMake
 
@@ -37,8 +38,8 @@ def main():
     input_dim = data_train.iloc[5].x.size(1)
     print('Input Dimensions: ', input_dim)
     #Loss, Epochs, Batch-size
-    num_epochs = 100
-    batch_size = 32*8
+    num_epochs = 10000
+    batch_size = 32
     sched_size = int(num_epochs//5)
     weight_decay = 1e-4
     gamma = 0.81
@@ -46,10 +47,10 @@ def main():
     #Data Loaders to handle the graphs we made earlier
     t_loader = DataLoader(data_train, batch_size=batch_size, shuffle=True)
     v_loader = DataLoader(data_test, batch_size=batch_size, shuffle=True)
-    model = simpleGNN(input_dim).to(device)
+    model = labbGNN(input_dim).to(device)
     optimizer = optim.AdamW(model.parameters()
                        , lr=0.001
-                       , weight_decay= weight_decay*15
+               #        , weight_decay= weight_decay*15
                        )  # Adjust learning rate as needed
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=sched_size, gamma=gamma)
     model, train_losses, val_losses = model.fitGNN(t_loader, v_loader, num_epochs, optimizer, criterion, scheduler)
