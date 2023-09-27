@@ -73,6 +73,8 @@ class simpleGNN(nn.Module):
         return x
 
     def fitGNN(self, t_loader, v_loader, num_epochs, optimizer, criterion, scheduler):
+        self.train()
+        self.weights_init()
         self.t_loader = t_loader
         self.v_loader = v_loader
         train_losses = []
@@ -147,8 +149,8 @@ class simpleGNN(nn.Module):
         plt.savefig(f'output/{self.model_name}_{strarg}.png')
         plt.close()
 
-    def weights_init(m):
-        if isinstance(m, (GCNConv, GATConv)):
-            nn.init.xavier_uniform_(m.weight.data)
-        elif isinstance(m, nn.Linear):
-            nn.init.xavier_uniform_(m.weight.data)
+    def weights_init(self):
+        if isinstance(self, (GCNConv, GATConv)):
+            nn.init.xavier_uniform_(self.weight.data)
+        elif isinstance(self, nn.Linear):
+            nn.init.xavier_uniform_(self.weight.data)
