@@ -40,7 +40,8 @@ import os
 # device = tch.device('cuda')
 
 class simpleGNN(nn.Module):
-    def __init__(self, input_dim, device=None):
+    def __init__(self, input_dim, model_name='default', device=None):
+        self.model_name = model_name
         if device:
             self.device = device
         else:
@@ -129,22 +130,21 @@ class simpleGNN(nn.Module):
         all_preds_tensor = tch.tensor(all_preds)
         all_labels_tensor = tch.tensor(all_labels)
         gnn_mse = mean_squared_error(all_labels_tensor, all_preds_tensor)
-        print(f'GNN2 Regression: MSE = {gnn_mse:.3f}')
+        print(f'{self.model_name} Regression: MSE = {gnn_mse:.3f}')
 
-    def plot_history(self, train_losses, val_losses, model_name):
+    def plot_history(self, train_losses, val_losses, strarg=''):
         fig = plt.figure(figsize=(15, 5), facecolor='w')
         ax = fig.add_subplot(121)
         ax.plot(train_losses)
         ax.plot(val_losses)
-        ax.set(title=model_name + ': Model loss', ylabel='Loss', xlabel='Epoch')
+        ax.set(title=f'{self.model_name}  {strarg}  : Model loss', ylabel='Loss', xlabel='Epoch')
         ax.legend(['Train', 'Test'], loc='upper right')
         ax = fig.add_subplot(122)
         ax.plot(np.log(train_losses))
         ax.plot(np.log(val_losses))
-        ax.set(title=model_name + ': Log model loss', ylabel='Log loss', xlabel='Epoch')
+        ax.set(title=self.model_name + ': Log model loss', ylabel='Log loss', xlabel='Epoch')
         ax.legend(['Train', 'Test'], loc='upper right')
-        plt.savefig('simpleGNNoutput.png')
-        # plt.show()
+        plt.savefig(f'{self.model_name}_output.png')
         plt.close()
 
     def weights_init(m):

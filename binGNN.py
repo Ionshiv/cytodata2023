@@ -39,20 +39,24 @@ import os
 # self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
 # device = tch.device('cuda')
 
-class labbGNN(nn.Module):
+class binGNN(nn.Module):
     def __init__(self, input_dim, model_name='default', device=None):
         self.model_name = model_name
         if device:
             self.device = device
         else:
             self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
-        super(labbGNN, self).__init__()
-        self.conv1 = GATConv(input_dim, 32, heads=1, concat=True)  # Two attention heads
-        self.conv2 = GATConv(32, 32, heads=2, concat=True)  # Two attention heads
-        self.conv3 = GATConv(64, 8, heads=2, concat=True)  # Two attention heads
+        # simpleGNN Layers
+        super(binGNN, self).__init__()
+        self.conv1 = GATConv(input_dim, 32, heads=1, concat=True)  # Single attention head
+        self.conv2 = GATConv(32, 32, heads=2, concat=True)  # Single attention head
+        self.conv3 = GATConv(64, 64, heads=2, concat=True)
+        self.conv4 = GATConv(128, 32, heads=2, concat=True)  # Single attention head
+        self.conv5 = GATConv(64, 8, heads=2, concat=True)  # Single attention head  # Single attention head
         self.fc3 = nn.Linear(16, 1)  # Output layer with 1 node
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(p=0.3)
+        self.sigmoid = nn.Sigmoid()
+        self.dropout = nn.Dropout(p=0.35)
 
     def forward(self, x, edge_index, batch):
         x = self.relu(self.conv1(x, edge_index))
@@ -61,8 +65,13 @@ class labbGNN(nn.Module):
         x = self.dropout(x)
         x = self.relu(self.conv3(x, edge_index))
         x = self.dropout(x)
+        x = self.relu(self.conv4(x, edge_index))
+        x = self.dropout(x)
+        x = self.relu(self.conv5(x, edge_index))
+        x = self.dropout(x)
         x = global_mean_pool(x, batch)
         x = self.fc3(x)
+        x = self.sigmoid(x)
         return x
 
     def fitGNN(self, t_loader, v_loader, num_epochs, optimizer, criterion, scheduler):
