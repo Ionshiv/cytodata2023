@@ -147,6 +147,7 @@ def create_default_config():
         "dataset": "A.csv",
         "num_epochs": 10000,
         "batch_size": 32,
+        "use_kfold": True,
         "learning_rate": 0.001,
         "weight_decay": 0.0001,
         "gamma": 0.81,
