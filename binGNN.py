@@ -115,14 +115,14 @@ class binGNN(nn.Module):
 
             avg_val_loss = sum(val_loss_items) / len(val_loss_items)
             val_losses.append(avg_val_loss)
-            if epoch % 5 == 0:
+            if epoch % 1 == 0:
                 print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {train_losses[-1]:.4f}, Val Loss: {avg_val_loss:.4f}')
             elif epoch == int(num_epochs-1):
                 print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {train_losses[-1]:.4f}, Val Loss: {avg_val_loss:.4f}')
             scheduler.step()
         return self, train_losses, val_losses
 
-    def print_eval(self):
+    def print_eval(self, fold=0):
         self.eval()
         y_true = []
         y_score = []
@@ -148,10 +148,10 @@ class binGNN(nn.Module):
         plt.ylim([0.0, 1.05])
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
-        plt.title('Receiver Operating Characteristic')
+        plt.title(f'Receiver Operating Characteristic (AUC={roc_auc})')
         plt.legend(loc="lower right")
         # plt.show()
-        plt.savefig()
+        plt.savefig(f'output/{self.model_name}_{fold}_roc_auc.png')
         plt.close
 
         # Compute and print confusion matrix
@@ -167,7 +167,7 @@ class binGNN(nn.Module):
             title='Confusion Matrix',
             ylabel='True label',
             xlabel='Predicted label')
-        plt.savefig('confusion_matrix.png')
+        plt.savefig(f'output/{self.model_name}_{fold}_confusion_matrix.png')
         plt.close()
 
     def plot_history(self, train_losses, val_losses, strarg=''):

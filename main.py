@@ -4,12 +4,12 @@ import torch as tch
 import torch.nn as nn
 import torch.optim as optim
 
-
 from torch_geometric.nn import GCNConv, GATConv, summary as gsummary, global_mean_pool, global_max_pool
 from torch_geometric.data import Data#, DataLoader
 from torch_geometric.loader import DataLoader
 from torch_geometric.datasets import MoleculeNet
 from torch_geometric.utils import dropout_adj
+from tqdm import tqdm
 
 # from rdkit import Chem
 # from rdkit.Chem import AllChem
@@ -30,6 +30,9 @@ def main():
     device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
 
     model_config = load_config()
+
+    if not os.path.exists("output"):
+        os.mkdir("output")
 
     model_name = model_config['name']
     loss_type = model_config['loss']
@@ -90,7 +93,7 @@ def main():
             df['validation_losses'] = val_losses
             df.to_csv(f'output/{model_name}_fold{fold}.csv', sep=';')
             model.plot_history(train_losses, val_losses, strarg=f'fold_{fold}')
-            model.print_eval()
+            model.print_eval(fold=fold)
             
     else:
     # gmake = GraphMake('data/solubility.csv')
