@@ -6,16 +6,19 @@ import numpy as np
 import pandas as pd
 import os
 
+from tqdm import tqdm
+
 class GraphMake():
     def __init__(self, path_data, y_name, sep=','):
         self.path_data = path_data
         self.y_name = y_name
         self.sep=sep
         if not os.path.exists(f'{path_data}.pt'):
-            print('Graph from Smiles not found. Generating... this may take a while')
+            print('Graph from Smiles not found. Generating... (this may take a while)')
             df = self.read_smiles_data()
             df = df.sample(frac=1, random_state=42).reset_index(drop=True)
-            data_pyg = df.apply(self.make_pyg, axis=1)
+            tqdm.pandas(desc="Processing")
+            data_pyg = df.progress_apply(self.make_pyg, axis=1)
             data_pyg = data_pyg[data_pyg.apply(lambda x: len(x.edge_index.shape) != 1)]
             data_pyg.reset_index(drop=True, inplace=True)
             tch.save(data_pyg, f'{path_data}.pt')
