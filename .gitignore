@@ -1,5 +1,6 @@
 __pycache__
 .vscode
-*_output.csv
+output/
 *.png
 config.json
+*.ipynb

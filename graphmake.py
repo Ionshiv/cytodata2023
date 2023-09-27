@@ -6,8 +6,10 @@ import numpy as np
 import pandas as pd
 
 class GraphMake():
-    def __init__(self, path_data):
+    def __init__(self, path_data, y_name, sep=','):
         self.path_data = path_data
+        self.y_name = y_name
+        self.sep=sep
         print('Graph from Smiles')
         df = self.read_smiles_data()
         df = df.sample(frac=1, random_state=42).reset_index(drop=True)
@@ -33,7 +35,7 @@ class GraphMake():
         return mol
 
     def read_smiles_data(self):
-        df = pd.read_csv(self.path_data, sep=',')
+        df = pd.read_csv(self.path_data, sep=self.sep)
         df['fingerprint'] = df['SMILES'].apply(self.smiles_to_fingerprint)
         df['fingerprint'] = df['fingerprint'].apply(lambda x: [int(bit) for bit in x])
         df['fingerprint'] = df['fingerprint'].apply(lambda x: np.array(x))
@@ -110,7 +112,7 @@ class GraphMake():
         #x10 = tch.tensor(atom_mass, dtype=tch.float).view(-1, 1)
         #x11 = tch.tensor(atom_pauling, dtype=tch.float).view(-1, 1)
         
-        y = tch.tensor(row['measured.log.solubility.mol.L.'], dtype=tch.float).view(-1, 1)
+        y = tch.tensor(row[str(self.y_name)], dtype=tch.float).view(-1, 1)
         x = tch.cat([x1
                     , x2
                     , x3

@@ -146,7 +146,7 @@ class binGNN(nn.Module):
         ax.plot(np.log(val_losses))
         ax.set(title=self.model_name + ': Log model loss', ylabel='Log loss', xlabel='Epoch')
         ax.legend(['Train', 'Test'], loc='upper right')
-        plt.savefig(f'{self.model_name}_output.png')
+        plt.savefig(f'output/{self.model_name}_{strarg}.png')
         plt.close()
 
     def weights_init(m):

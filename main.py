@@ -40,10 +40,11 @@ def main():
     sched_size = int(num_epochs//5)
     weight_decay = model_config['weight_decay']
     gamma = model_config['gamma']
+    y_name = model_config['y_name']
     print(f"Running {model_name} with {loss_type} loss on dataset {dataset_file}")
 
     # Update your dataset loading logic based on dataset_file
-    gmake = GraphMake(f'data/{dataset_file}')
+    gmake = GraphMake(f'data/{dataset_file}', y_name=y_name)
 
     # gmake = GraphMake('data/solubility.csv')
     data_pyg = gmake.getPyG()
@@ -72,6 +73,7 @@ def main():
         model = labbGNN(input_dim, model_name=model_name).to(device)
     elif model_name == "binGNN":
         model = binGNN(input_dim, model_name=model_name).to(device)
+      
     
     optimizer = optim.AdamW(model.parameters()
                        , lr=learning_rate
@@ -81,7 +83,7 @@ def main():
     model, train_losses, val_losses = model.fitGNN(t_loader, v_loader, num_epochs, optimizer, criterion, scheduler)
     df = pd.DataFrame(train_losses, columns=['train_losses'])
     df['validation_losses'] = val_losses
-    df.to_csv(f'{model_name}_output.csv', sep=';')
+    df.to_csv(f'output/{model_name}.csv', sep=';')
     model.plot_history(train_losses, val_losses)
     model.print_eval()
 
