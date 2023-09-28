@@ -190,3 +190,5 @@ class binGNN(nn.Module):
             nn.init.xavier_uniform_(self.weight.data)
         elif isinstance(self, nn.Linear):
             nn.init.xavier_uniform_(self.weight.data)
+        else:
+            raise ValueError()
