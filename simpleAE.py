@@ -174,7 +174,8 @@ class simpleAE(nn.Module):
             print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}')
 
             scheduler.step()
-
+        self.t_loader = t_loader
+        self.v_loader = v_loader
         return train_losses, val_losses
 
     def print_eval(self, fold=0):

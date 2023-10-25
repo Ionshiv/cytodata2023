@@ -116,7 +116,7 @@ def main():
         optimizer = optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=sched_size, gamma=gamma)
         print('fitting')
-        model, train_losses, val_losses = model.fitAE(t_loader, v_loader, num_epochs, optimizer, criterion, scheduler)
+        train_losses, val_losses = model.fitAE(t_loader, v_loader, num_epochs, optimizer, criterion, scheduler)
 
         df = pd.DataFrame(train_losses, columns=['train_losses'])
         df['validation_losses'] = val_losses
