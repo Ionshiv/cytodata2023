@@ -1,24 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-# Pytorch and Pytorch Geometric
+# Pytorch
 import torch as tch
 import torch.nn as nn
 import torch.optim as optim
-
-
-from torch_geometric.nn import GCNConv, GATConv, summary as gsummary, global_mean_pool, global_max_pool
-from torch_geometric.data import Data#, DataLoader
-from torch_geometric.loader import DataLoader
-from torch_geometric.datasets import MoleculeNet
-from torch_geometric.utils import dropout_adj
-
-from rdkit import Chem
-from rdkit.Chem import AllChem
-from rdkit.Chem import Descriptors
-from rdkit.Chem import Lipinski
-
-#Internal Libraries
-from graphmake import GraphMake
 
 # External Helper libraries
 from torchsummary import summary as asummary
@@ -40,7 +25,7 @@ import os
 # self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
 # device = tch.device('cuda')
 
-class binGNN(nn.Module):
+class modelAE(nn.Module):
     def __init__(self, input_dim, model_name='default', device=None):
         self.model_name = model_name
         if device:
@@ -49,11 +34,7 @@ class binGNN(nn.Module):
             self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
         # simpleGNN Layers
         super(binGNN, self).__init__()
-        self.conv1 = GATConv(input_dim, 32, heads=1, concat=True)  # Single attention head
-        self.conv2 = GATConv(32, 32, heads=2, concat=True)  # Single attention head
-        self.conv3 = GATConv(64, 64, heads=2, concat=True)
-        self.conv4 = GATConv(128, 32, heads=2, concat=True)  # Single attention head
-        self.conv5 = GATConv(64, 8, heads=2, concat=True)  # Single attention head  # Single attention head
+        #PLACEHOLDER
         self.fc3 = nn.Linear(16, 8)  # Output layer with 1 node
         self.fc4 = nn.Linear(8,1)
         self.relu = nn.ReLU()
@@ -62,17 +43,7 @@ class binGNN(nn.Module):
         self.apply(self.weights_init)
 
     def forward(self, x, edge_index, batch):
-        x = self.relu(self.conv1(x, edge_index))
-        x = self.dropout(x)
-        x = self.relu(self.conv2(x, edge_index))
-        x = self.dropout(x)
-        x = self.relu(self.conv3(x, edge_index))
-        x = self.dropout(x)
-        x = self.relu(self.conv4(x, edge_index))
-        x = self.dropout(x)
-        x = self.relu(self.conv5(x, edge_index))
-        x = self.dropout(x)
-        x = global_mean_pool(x, batch)
+        #PlaceHolder
         x = self.fc3(x)
         x = self.relu(x)
         x = self.fc4(x)

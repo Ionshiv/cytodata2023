@@ -4,23 +4,10 @@ import torch as tch
 import torch.nn as nn
 import torch.optim as optim
 
-from torch_geometric.nn import GCNConv, GATConv, summary as gsummary, global_mean_pool, global_max_pool
-from torch_geometric.data import Data#, DataLoader
-from torch_geometric.loader import DataLoader
-from torch_geometric.datasets import MoleculeNet
-from torch_geometric.utils import dropout_adj
 from tqdm import tqdm
 
-# from rdkit import Chem
-# from rdkit.Chem import AllChem
-# from rdkit.Chem import Descriptors
-# from rdkit.Chem import Lipinski
-# from matplotlib import pyplot as plt
 import json
-from labbGNN import labbGNN
-from simpleGNN import simpleGNN
-from binGNN import binGNN
-from graphmake import GraphMake
+from modelAE import modelAAE
 import os
 from sklearn.model_selection import KFold
 
@@ -36,7 +23,7 @@ def main():
 
     model_name = model_config['name']
     loss_type = model_config['loss']
-    dataset_file = model_config['dataset']
+    data_path = model_config['dataset']
     #Loss, Epochs, Batch-size
     num_epochs = model_config['num_epochs']
     batch_size = model_config['batch_size']
@@ -46,11 +33,9 @@ def main():
     weight_decay = model_config['weight_decay']
     gamma = model_config['gamma']
     y_name = model_config['y_name']
-    print(f"Running {model_name} with {loss_type} loss on dataset {dataset_file}")
+    print(f"Running {model_name} with {loss_type} loss on dataset {data_path}")
 
     # Update your dataset loading logic based on dataset_file
-    gmake = GraphMake(f'data/{dataset_file}', y_name=y_name)
-    data_pyg = gmake.getPyG()
 
     if use_kfold:
         k_folds = 5
@@ -60,14 +45,8 @@ def main():
 
             print(f"FOLD {fold}")
             print("------------------------------")
-            data_train = data_pyg.iloc[train_ids]
-            data_train.reset_index(drop=True, inplace=True)
-            data_test = data_pyg.iloc[test_ids]
-            data_test.reset_index(drop=True, inplace=True)
 
-            data_train = rebalance(data_train)
-
-            input_dim = data_train.iloc[5].x.size(1)
+            #TODO Implement dataloader with train and test split.
             print('Input Dimensions: ', input_dim)
             
             if loss_type == "MSE":
@@ -140,25 +119,6 @@ def main():
         model.plot_history(train_losses, val_losses)
         model.print_eval()
 
-def rebalance(data):
-    data_ones = data[data.apply(lambda x: int(round(x.y.item())) == 1)]
-    data_zero = data[data.apply(lambda x: int(round(x.y.item())) == 0)]
-    n_ones = len(data_ones)
-    n_zero = len(data_zero)
-    repeats = n_zero//n_ones
-    copies = [data_ones] * repeats
-    padded_ones = pd.concat(copies, ignore_index=True)
-    remainder = n_zero % n_ones
-    if remainder > 0:
-        additional_elements = data_ones.sample(n=remainder, replace=True)
-        padded_ones = pd.concat([padded_ones, additional_elements], ignore_index=True)
-    padded_data = pd.concat([padded_ones, data_zero], ignore_index=True)
-    random_data = padded_data.sample(frac=1, random_state=42).reset_index(drop=True)
-    data = random_data.copy(deep=True)
-    return data
-
-
-
 def load_config():
     if not os.path.exists("config.json"):
         create_default_config()
@@ -167,17 +127,17 @@ def load_config():
     
 def create_default_config():
     default_config = {
-        "name": "simpleGNN",
-        "loss": "MSE",
-        "dataset": "A.csv",
-        "num_epochs": 10000,
+        "name": "modelAE",
+        "loss": "BCE",
+        "dataset": "/PATH",
+        "num_epochs": 500,
         "batch_size": 32,
         "use_kfold": True,
         "learning_rate": 0.001,
         "weight_decay": 0.0001,
         "gamma": 0.81,
         "y_name": "target",
-        "_Comment Key DO NOT USE": "when using solubility use: 'measured.log.solubility.mol.L.'  and when using herg_central use 'hERG_inhib'",
+        "_Comment Key DO NOT USE": "Specify targets for training",
     }
     with open("config.json", "w") as f:
         json.dump(default_config, f)
