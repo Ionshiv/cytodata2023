@@ -54,9 +54,10 @@ class binGNN(nn.Module):
         self.conv3 = GATConv(64, 64, heads=2, concat=True)
         self.conv4 = GATConv(128, 32, heads=2, concat=True)  # Single attention head
         self.conv5 = GATConv(64, 8, heads=2, concat=True)  # Single attention head  # Single attention head
-        self.fc3 = nn.Linear(16, 1)  # Output layer with 1 node
+        self.fc3 = nn.Linear(16, 2)  # Output layer with 1 node
+        self.fc4 = nn.Linear(2, 1)
         self.relu = nn.ReLU()
-        self.sigmoid = nn.Sigmoid()
+        # self.sigmoid = nn.Sigmoid()
         self.dropout = nn.Dropout(p=0.35)
 
     def forward(self, x, edge_index, batch):
@@ -71,8 +72,9 @@ class binGNN(nn.Module):
         x = self.relu(self.conv5(x, edge_index))
         x = self.dropout(x)
         x = global_mean_pool(x, batch)
-        x = self.fc3(x)
-        x = self.sigmoid(x)
+        x = self.relu(self.fc3(x))
+        x = self.fc4(x)
+        # x = self.sigmoid(x)
         return x
 
     def fitGNN(self, t_loader, v_loader, num_epochs, optimizer, criterion, scheduler):
@@ -131,7 +133,7 @@ class binGNN(nn.Module):
             for batch in self.v_loader:
                 data = batch.to(self.device)
                 preds = self(data.x, data.edge_index, data.batch)
-                preds = tch.sigmoid(preds)  # Apply sigmoid if not included in the model
+                # print(f'preds: {preds}')
                 y_score.extend(preds.cpu().numpy())
                 y_true.extend(data.y.cpu().numpy())
 
@@ -155,7 +157,9 @@ class binGNN(nn.Module):
         plt.close
 
         # Compute and print confusion matrix
+        # print(f'y_score: {y_score}')
         y_pred = [1 if s >= 0.5 else 0 for s in y_score]
+        # print(f'y_pred: {y_pred}')
         cm = confusion_matrix(y_true, y_pred)
         print('Confusion Matrix:')
         print(cm)
