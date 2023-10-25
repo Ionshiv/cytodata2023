@@ -30,8 +30,9 @@ class customDataset(Dataset):
         
         # Stack along new dimension to create a single tensor for the multi-channel image
         multi_channel_img = tch.stack(images)
+        multi_channel_img = tch.squeeze(multi_channel_img, 2)
         
-        return multi_channel_img
+        return multi_channel_img.to(tch.float32)
 
 # from torch.utils.data import Dataset
 # from torchvision import transforms

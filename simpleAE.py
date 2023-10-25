@@ -25,6 +25,57 @@ import os
 # self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
 # device = tch.device('cuda')
 
+
+class Encoder(nn.Module):
+    def __init__(self, input_dim):
+        super(Encoder, self).__init__()
+        
+        layers = [
+            nn.Conv2d(input_dim, 9, kernel_size=3, stride=2, padding=1),  # 512x512x9
+            nn.Conv2d(9, 12, kernel_size=3, stride=2, padding=1),  # 256x256x12
+            nn.Conv2d(12, 15, kernel_size=3, stride=2, padding=1),  # 128x128x15
+            nn.Conv2d(15, 18, kernel_size=3, stride=2, padding=1),  # 64x64x18
+            nn.Conv2d(18, 21, kernel_size=3, stride=2, padding=1),  # 32x32x21
+            nn.Conv2d(21, 24, kernel_size=3, stride=2, padding=1),  # 16x16x24
+            nn.Conv2d(24, 27, kernel_size=3, stride=2, padding=1),  # 8x8x27
+            nn.Conv2d(27, 30, kernel_size=3, stride=2, padding=1),  # 4x4x30
+            nn.Conv2d(30, 33, kernel_size=3, stride=2, padding=1),  # 2x2x33
+        ]
+        self.enc_convs = nn.ModuleList(layers)
+        self.relu = nn.ReLU()
+
+    def forward(self, x):
+        outputs = []
+        for enc_conv in self.enc_convs:
+            x = self.relu(enc_conv(x))
+            outputs.append(x)
+        return outputs
+
+class Decoder(nn.Module):
+    def __init__(self, output_dim):
+        super(Decoder, self).__init__()
+        
+        layers = [
+            nn.ConvTranspose2d(33, 30, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(30, 27, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(27, 24, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(24, 21, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(21, 18, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(18, 15, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(15, 12, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(12, 9, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(9, output_dim, kernel_size=3, stride=2, padding=1, output_padding=1),
+        ]
+        self.dec_convs = nn.ModuleList(layers)
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, x, enc_outputs):
+        for i, dec_conv in enumerate(self.dec_convs):
+            x = self.relu(dec_conv(x))
+            # x = self.relu(dec_conv(x) + enc_outputs[-(i)])
+        return self.sigmoid(x)
+
 class simpleAE(nn.Module):
     def __init__(self, input_dim, model_name='default', device=None):
         super(simpleAE, self).__init__()
@@ -35,40 +86,59 @@ class simpleAE(nn.Module):
         else:
             self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
         self.apply(self.weights_init)
-        # Encoder
-        self.enc_conv1 = nn.Conv2d(input_dim, 64, kernel_size=3, stride=1, padding=1)
-        self.enc_conv2 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)
-
-        # Decoder
-        self.dec_conv1 = nn.Conv2d(128, 64, kernel_size=3, stride=1, padding=1)
-        self.dec_conv2 = nn.Conv2d(64, input_dim, kernel_size=3, stride=1, padding=1)
-
-        self.relu = nn.ReLU()
-        self.sigmoid = nn.Sigmoid()
+        self.encoder = Encoder(6)
+        self.decoder = Decoder(6)
 
     def forward(self, x):
-        # Encoder
-        print('forward')
-        x = self.relu(self.enc_conv1(x))
-        x = self.relu(self.enc_conv2(x))
+        enc_outputs = self.encoder(x)
+        print(f"Length of enc_outputs: {enc_outputs[-1].shape}")
+        dec_output = self.decoder(enc_outputs[-1], enc_outputs[:-1])
+        print(f"Length of dec_convs: {len(self.decoder.dec_convs)}")
+        return dec_output
+    # def __init__(self, input_dim, model_name='default', device=None):
+    #     super(simpleAE, self).__init__()
+    #     self.model_name = model_name
+    #     print('model init')
+    #     if device:
+    #         self.device = device
+    #     else:
+    #         self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
+    #     self.apply(self.weights_init)
+    #     # Encoder
+    #     self.enc_conv1 = nn.Conv2d(input_dim, 64, kernel_size=3, stride=1, padding=1)
+    #     self.enc_conv2 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)
 
-        # Decoder with skip-connection
-        x = self.relu(self.dec_conv1(x) + x)
-        x = self.sigmoid(self.dec_conv2(x))
+    #     # Decoder
+    #     self.dec_conv1 = nn.Conv2d(128, 64, kernel_size=3, stride=1, padding=1)
+    #     self.dec_conv2 = nn.Conv2d(64, input_dim, kernel_size=3, stride=1, padding=1)
 
-        return x
+    #     self.relu = nn.ReLU()
+    #     self.sigmoid = nn.Sigmoid()
+
+    # def forward(self, x):
+    #     # Encoder
+    #     print('forward')
+    #     x1 = self.relu(self.enc_conv1(x))
+    #     x2 = self.relu(self.enc_conv2(x1))
+
+    #     # Decoder with skip-connection
+    #     y = self.relu(self.dec_conv1(x2) + x1)
+    #     y = self.sigmoid(self.dec_conv2(y))
+        
+    #     return y
+
 
     def fitAE(self, t_loader, v_loader, num_epochs, optimizer, criterion, scheduler):
         self.train()
         train_losses = []
         val_losses = []
-        print('fitting')
         for epoch in range(num_epochs):
             # Training Phase
             self.train()
             train_loss_items = []
             for batch in t_loader:
-                img = batch['image'].to(self.device)
+                img = batch.to(self.device)
+                img = tch.squeeze(img, 2)
                 optimizer.zero_grad()
                 # Forward pass
                 outputs = self(img)
@@ -92,7 +162,8 @@ class simpleAE(nn.Module):
             val_loss_items = []
             with tch.no_grad():
                 for val_batch in v_loader:
-                    val_img = val_batch['image'].to(self.device)
+                    val_img = val_batch.to(self.device)
+                    val_img = tch.squeeze(val_img, 2)
                     val_outputs = self(val_img)
                     val_loss = criterion(val_outputs, val_img)
                     val_loss_items.append(val_loss.item())
