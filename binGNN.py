@@ -54,11 +54,12 @@ class binGNN(nn.Module):
         self.conv3 = GATConv(64, 64, heads=2, concat=True)
         self.conv4 = GATConv(128, 32, heads=2, concat=True)  # Single attention head
         self.conv5 = GATConv(64, 8, heads=2, concat=True)  # Single attention head  # Single attention head
-        self.fc3 = nn.Linear(16, 2)  # Output layer with 1 node
-        self.fc4 = nn.Linear(2, 1)
+        self.fc3 = nn.Linear(16, 8)  # Output layer with 1 node
+        self.fc4 = nn.Linear(8,1)
         self.relu = nn.ReLU()
         # self.sigmoid = nn.Sigmoid()
         self.dropout = nn.Dropout(p=0.35)
+        self.apply(self.weights_init)
 
     def forward(self, x, edge_index, batch):
         x = self.relu(self.conv1(x, edge_index))
@@ -72,14 +73,14 @@ class binGNN(nn.Module):
         x = self.relu(self.conv5(x, edge_index))
         x = self.dropout(x)
         x = global_mean_pool(x, batch)
-        x = self.relu(self.fc3(x))
+        x = self.fc3(x)
+        x = self.relu(x)
         x = self.fc4(x)
-        # x = self.sigmoid(x)
+        x = self.sigmoid(x)
         return x
 
     def fitGNN(self, t_loader, v_loader, num_epochs, optimizer, criterion, scheduler):
         self.train()
-        self.weights_init()
         self.t_loader = t_loader
         self.v_loader = v_loader
         train_losses = []
@@ -189,8 +190,18 @@ class binGNN(nn.Module):
         plt.savefig(f'output/{self.model_name}_{strarg}.png')
         plt.close()
 
-    def weights_init(self):
-        if isinstance(self, (GCNConv, GATConv)):
-            nn.init.xavier_uniform_(self.weight.data)
-        elif isinstance(self, nn.Linear):
-            nn.init.xavier_uniform_(self.weight.data)
+    #def weights_init(self):
+    #    if isinstance(self, (GCNConv, GATConv)):
+    #        nn.init.xavier_uniform_(self.weight.data)
+    #    elif isinstance(self, (nn.Linear, nn.Sigmoid)):
+    #        nn.init.xavier_uniform_(self.weight.data)
+    #    else:
+    #        raise ValueError()
+    
+    def weights_init(self, m):
+        if isinstance(m, (nn.Linear)):
+            nn.init.xavier_uniform_(m.weight.data)
+        elif isinstance(m, nn.Module):
+            pass  # Do nothing for other types of nn.Module
+        else:
+            raise ValueError("Unknown layer type for weight initialization")
