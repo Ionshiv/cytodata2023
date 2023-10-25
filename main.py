@@ -3,11 +3,14 @@ import pandas as pd
 import torch as tch
 import torch.nn as nn
 import torch.optim as optim
+from torchvision import datasets, transforms
+from torch.utils.data import random_split, DataLoader, Subset
 
 from tqdm import tqdm
 
 import json
-from modelAE import modelAAE
+from simpleAE import simpleAE
+from customDataset import customDataset
 import os
 from sklearn.model_selection import KFold
 
@@ -23,7 +26,7 @@ def main():
 
     model_name = model_config['name']
     loss_type = model_config['loss']
-    data_path = model_config['dataset']
+    img_dir = model_config['datapath']
     #Loss, Epochs, Batch-size
     num_epochs = model_config['num_epochs']
     batch_size = model_config['batch_size']
@@ -33,32 +36,38 @@ def main():
     weight_decay = model_config['weight_decay']
     gamma = model_config['gamma']
     y_name = model_config['y_name']
-    print(f"Running {model_name} with {loss_type} loss on dataset {data_path}")
+    print(f"Running {model_name} with {loss_type} loss on dataset {img_dir}")
 
     # Update your dataset loading logic based on dataset_file
+    transform = transforms.Compose([transforms.ToTensor()])
 
+    # Initialize Custom Dataset
+    # img_dir = 'data/'
+    data_custom = customDataset(img_dir)
     if use_kfold:
+        print('running with Kfold')
         k_folds = 5
         kfold = KFold(n_splits=k_folds, shuffle=True)
         
-        for fold, (train_ids, test_ids) in enumerate(kfold.split(data_pyg)):
+        for fold, (train_ids, test_ids) in enumerate(kfold.split(data_custom)):
 
             print(f"FOLD {fold}")
             print("------------------------------")
 
             #TODO Implement dataloader with train and test split.
             print('Input Dimensions: ', input_dim)
-            
+            train_subsampler = Subset(data_custom, train_ids)
+            test_subsampler = Subset(data_custom, test_ids)
             if loss_type == "MSE":
                 criterion = nn.MSELoss()
             elif loss_type == "BCE":
                 criterion = nn.BCELoss() 
             #Data Loaders to handle the graphs we made earlier
-            t_loader = DataLoader(data_train, batch_size=batch_size, shuffle=True)
-            v_loader = DataLoader(data_test, batch_size=batch_size, shuffle=True)
+            t_loader = DataLoader(train_subsampler, batch_size=batch_size, shuffle=True, num_workers=4)
+            v_loader = DataLoader(test_subsampler, batch_size=batch_size, shuffle=True, num_workers=4)
             
-            if model_name == "simpleGNN":
-                model = simpleGNN(input_dim, model_name=model_name).to(device)
+            if model_name == "simpleAE":
+                model = simpleAE(input_dim, model_name=model_name).to(device)
             elif model_name == "labbGNN":
                 model = labbGNN(input_dim, model_name=model_name).to(device)
             elif model_name == "binGNN":
@@ -79,40 +88,36 @@ def main():
             
     else:
     # gmake = GraphMake('data/solubility.csv')
-        
-        n_train = int(len(data_pyg) * 0.7) # 70% of data for training and 30% for testing
-        indices = np.arange(n_train)
-        data_train = data_pyg[indices[:n_train]]
-        data_train.reset_index(drop=True, inplace=True)
-        data_test = data_pyg[~data_pyg.isin(data_train)]
-        data_test.reset_index(drop=True, inplace=True)
+        print('running with no Kfold')
+        # Assuming data_custom is your dataset
+        n_train = int(len(data_custom) * 0.7)  # 70% of data for training
+        n_test = len(data_custom) - n_train
+        data_train, data_test = random_split(data_custom, [n_train, n_test])
 
+        # Assuming your images have shape [6, 4240, 4240], to get the input dimension
+        input_dim = 6
+        print('Input Dimensions:', input_dim)
 
-        input_dim = data_train.iloc[5].x.size(1)
-        print('Input Dimensions: ', input_dim)
-        
         if loss_type == "MSE":
             criterion = nn.MSELoss()
         elif loss_type == "BCE":
-            criterion = nn.BCELoss() 
-        #Data Loaders to handle the graphs we made earlier
+            criterion = nn.BCELoss()
+        print(f'criterion {criterion}')
         t_loader = DataLoader(data_train, batch_size=batch_size, shuffle=True)
         v_loader = DataLoader(data_test, batch_size=batch_size, shuffle=True)
-        
-        if model_name == "simpleGNN":
-            model = simpleGNN(input_dim, model_name=model_name).to(device)
+        print('loaders done')
+        if model_name == "simpleAE":
+            model = simpleAE(input_dim, model_name=model_name).to(device)
         elif model_name == "labbGNN":
             model = labbGNN(input_dim, model_name=model_name).to(device)
         elif model_name == "binGNN":
             model = binGNN(input_dim, model_name=model_name).to(device)
-        
-        
-        optimizer = optim.AdamW(model.parameters()
-                        , lr=learning_rate
-                        , weight_decay= weight_decay
-                        )  # Adjust learning rate as needed
+        print(f'model: {model_name}')
+        optimizer = optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=sched_size, gamma=gamma)
-        model, train_losses, val_losses = model.fitGNN(t_loader, v_loader, num_epochs, optimizer, criterion, scheduler)
+        print('fitting')
+        model, train_losses, val_losses = model.fitAE(t_loader, v_loader, num_epochs, optimizer, criterion, scheduler)
+
         df = pd.DataFrame(train_losses, columns=['train_losses'])
         df['validation_losses'] = val_losses
         df.to_csv(f'output/{model_name}.csv', sep=';')
@@ -129,18 +134,20 @@ def create_default_config():
     default_config = {
         "name": "modelAE",
         "loss": "BCE",
-        "dataset": "/PATH",
+        "dataset": "/scratch/project_2008672/images/",
         "num_epochs": 500,
         "batch_size": 32,
         "use_kfold": True,
         "learning_rate": 0.001,
         "weight_decay": 0.0001,
-        "gamma": 0.81,
-        "y_name": "target",
-        "_Comment Key DO NOT USE": "Specify targets for training",
+        "gamma": 1.0,
+        "y_name": "self",
+        "_Comment Key DO NOT USE": "Specify targets for training. Self for AE. set1 for AE+labels",
     }
     with open("config.json", "w") as f:
         json.dump(default_config, f)
+
+    
 
 if __name__ == "__main__":
     main()

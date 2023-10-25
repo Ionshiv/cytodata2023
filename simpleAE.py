@@ -25,76 +25,86 @@ import os
 # self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
 # device = tch.device('cuda')
 
-class modelAE(nn.Module):
+class simpleAE(nn.Module):
     def __init__(self, input_dim, model_name='default', device=None):
+        super(simpleAE, self).__init__()
         self.model_name = model_name
+        print('model init')
         if device:
             self.device = device
         else:
             self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
-        # simpleGNN Layers
-        super(binGNN, self).__init__()
-        #PLACEHOLDER
-        self.fc3 = nn.Linear(16, 8)  # Output layer with 1 node
-        self.fc4 = nn.Linear(8,1)
-        self.relu = nn.ReLU()
-        # self.sigmoid = nn.Sigmoid()
-        self.dropout = nn.Dropout(p=0.35)
         self.apply(self.weights_init)
+        # Encoder
+        self.enc_conv1 = nn.Conv2d(input_dim, 64, kernel_size=3, stride=1, padding=1)
+        self.enc_conv2 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)
 
-    def forward(self, x, edge_index, batch):
-        #PlaceHolder
-        x = self.fc3(x)
-        x = self.relu(x)
-        x = self.fc4(x)
-        x = self.sigmoid(x)
+        # Decoder
+        self.dec_conv1 = nn.Conv2d(128, 64, kernel_size=3, stride=1, padding=1)
+        self.dec_conv2 = nn.Conv2d(64, input_dim, kernel_size=3, stride=1, padding=1)
+
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, x):
+        # Encoder
+        print('forward')
+        x = self.relu(self.enc_conv1(x))
+        x = self.relu(self.enc_conv2(x))
+
+        # Decoder with skip-connection
+        x = self.relu(self.dec_conv1(x) + x)
+        x = self.sigmoid(self.dec_conv2(x))
+
         return x
 
-    def fitGNN(self, t_loader, v_loader, num_epochs, optimizer, criterion, scheduler):
+    def fitAE(self, t_loader, v_loader, num_epochs, optimizer, criterion, scheduler):
         self.train()
-        self.t_loader = t_loader
-        self.v_loader = v_loader
         train_losses = []
         val_losses = []
+        print('fitting')
         for epoch in range(num_epochs):
             # Training Phase
             self.train()
             train_loss_items = []
             for batch in t_loader:
-                batch.to(self.device)
+                img = batch['image'].to(self.device)
                 optimizer.zero_grad()
-                # Use Batch Data object in forward pass
-                outputs = self(batch.x.float(), batch.edge_index, batch.batch)
-                loss = criterion(outputs, batch.y)
+                # Forward pass
+                outputs = self(img)
+                # Compute loss (Mean Squared Error between output and original image)
+                loss = criterion(outputs, img)
 
-                l1_lambda = 0.0001
-                l1_norm = sum(p.abs().sum() for p in self.parameters())
-                loss += l1_lambda * l1_norm
+                # l1_lambda = 0.0001
+                # l1_norm = sum(p.abs().sum() for p in self.parameters())
+                # loss += l1_lambda * l1_norm
 
+                # Backward pass and optimization
                 loss.backward()
                 optimizer.step()
                 train_loss_items.append(loss.item())
 
             avg_train_loss = sum(train_loss_items) / len(train_loss_items)
             train_losses.append(avg_train_loss)
-            # Validation Phase (assuming you have a separate validation loader)
+
+            # Validation Phase
             self.eval()
             val_loss_items = []
             with tch.no_grad():
                 for val_batch in v_loader:
-                    val_batch.to(self.device)
-                    val_outputs = self(val_batch.x.float(), val_batch.edge_index, val_batch.batch)
-                    val_loss = criterion(val_outputs, val_batch.y)
+                    val_img = val_batch['image'].to(self.device)
+                    val_outputs = self(val_img)
+                    val_loss = criterion(val_outputs, val_img)
                     val_loss_items.append(val_loss.item())
 
             avg_val_loss = sum(val_loss_items) / len(val_loss_items)
             val_losses.append(avg_val_loss)
-            if epoch % 1 == 0:
-                print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {train_losses[-1]:.4f}, Val Loss: {avg_val_loss:.4f}')
-            elif epoch == int(num_epochs-1):
-                print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {train_losses[-1]:.4f}, Val Loss: {avg_val_loss:.4f}')
+
+            print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}')
+
             scheduler.step()
-        return self, train_losses, val_losses
+
+        return train_losses, val_losses
 
     def print_eval(self, fold=0):
         self.eval()
@@ -168,11 +178,14 @@ class modelAE(nn.Module):
     #        nn.init.xavier_uniform_(self.weight.data)
     #    else:
     #        raise ValueError()
-    
+        
     def weights_init(self, m):
-        if isinstance(m, (nn.Linear)):
+        if isinstance(m, (nn.Linear, nn.Conv2d)):
             nn.init.xavier_uniform_(m.weight.data)
+            if m.bias is not None:
+                nn.init.zeros_(m.bias.data)
         elif isinstance(m, nn.Module):
             pass  # Do nothing for other types of nn.Module
         else:
             raise ValueError("Unknown layer type for weight initialization")
+
