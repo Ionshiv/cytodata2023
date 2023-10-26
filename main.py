@@ -138,6 +138,7 @@ def create_default_config():
         "learning_rate": 0.001,
         "weight_decay": 0,
         "y_name": "self",
+        "gamma": 1.0,
         "_Comment Key DO NOT USE": "Specify targets for training. Self for AE. set1 for AE+labels",
     }
     with open("config.json", "w") as f:

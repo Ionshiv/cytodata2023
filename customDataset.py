@@ -96,8 +96,8 @@ class customDataset(Dataset):
         self.root_dir = root_dir
 
         # Define the root path and img_path (you need to define img_path first)
-        root_path = os.path.dirname(self.root_dir)
-        meta_path = os.path.join(root_path, 'metadata')
+        meta_path = os.path.join(self.root_dir, 'metadata')
+        img_path = os.path.join(self.root_dir, 'images')
         trainmeta_path = os.path.join(meta_path, 'cytodata2023_hackathon_train.csv')
         df_metadata_train = pd.read_csv(trainmeta_path)
 
@@ -107,9 +107,9 @@ class customDataset(Dataset):
         # Iterate through the rows in df_metadata_train
         for idx, row in df_metadata_train.iterrows():
             slide_pattern = row['Slide'] + '*roi{:03d}*'.format(row['ROI number'])
-            imgpaths = list(self.root_dir.glob(slide_pattern))
+            imgpaths = list(Path(img_path).glob(slide_pattern))
             imgpaths.sort()
-            self.all_files.append(imgpaths)
+            self.all_files.append(imgpaths)elf.all_files.append(imgpaths)
 
         self.channels = [f"c{i}" for i in range(1, 7)]  # c1 to c6
 
