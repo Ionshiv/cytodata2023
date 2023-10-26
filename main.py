@@ -131,7 +131,7 @@ def create_default_config():
     default_config = {
         "name": "simpleAE",
         "loss": "MSE",
-        "dataset": "/scratch/project_2008672/images/",
+        "datapath": "/scratch/project_2008672/images/",
         "num_epochs": 500,
         "batch_size": 32,
         "use_kfold": False,
