@@ -114,7 +114,7 @@ class customDataset(Dataset):
         self.channels = [f"c{i}" for i in range(1, 7)]  # c1 to c6
 
     def __len__(self):
-        return len(self.unit_ids)
+        return len(self.all_files)
 
     def __getitem__(self, idx):
         images = []
