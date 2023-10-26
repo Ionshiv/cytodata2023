@@ -91,9 +91,7 @@ class simpleAE(nn.Module):
 
     def forward(self, x):
         enc_outputs = self.encoder(x)
-        print(f"Length of enc_outputs: {enc_outputs[-1].shape}")
         dec_output = self.decoder(enc_outputs[-1], enc_outputs[:-1])
-        print(f"Length of dec_convs: {len(self.decoder.dec_convs)}")
         return dec_output
     # def __init__(self, input_dim, model_name='default', device=None):
     #     super(simpleAE, self).__init__()
@@ -177,6 +175,26 @@ class simpleAE(nn.Module):
         self.t_loader = t_loader
         self.v_loader = v_loader
         return train_losses, val_losses
+
+    def make_embedding(self, data_loader=None):
+        self.encoder.eval()  # Set the encoder to evaluation mode
+        embeddings = []
+        if data_loader:
+            print('full_loader')
+        else:
+            data_loader = self.t_loader
+        with tch.no_grad():  # No need to calculate gradients
+            for batch in data_loader:
+                data = batch.to(self.device)
+                data = tch.squeeze(data, 2)
+                enc_outputs = self.encoder(data)
+                # Take just the last output tensor from the list of encoder outputs
+                final_output = enc_outputs[-1].cpu().numpy()
+                embeddings.append(final_output)
+
+        embeddings = np.vstack(embeddings)
+        np.save('encoder_embeddings.npy', embeddings)
+        return embeddings
 
     def print_eval(self, fold=0):
         self.eval()

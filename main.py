@@ -70,8 +70,6 @@ def main():
                 model = simpleAE(input_dim, model_name=model_name).to(device)
             elif model_name == "labbGNN":
                 model = labbGNN(input_dim, model_name=model_name).to(device)
-            elif model_name == "binGNN":
-                model = binGNN(input_dim, model_name=model_name).to(device)
             
             
             optimizer = optim.AdamW(model.parameters()
@@ -83,9 +81,9 @@ def main():
             df = pd.DataFrame(train_losses, columns=['train_losses'])
             df['validation_losses'] = val_losses
             df.to_csv(f'output/{model_name}_fold{fold}.csv', sep=';')
-            model.plot_history(train_losses, val_losses, strarg=f'fold_{fold}')
-            model.print_eval(fold=fold)
-            
+            # model.plot_history(train_losses, val_losses, strarg=f'fold_{fold}')
+            # model.print_eval(fold=fold)
+            _ = model.make_embedding()
     else:
     # gmake = GraphMake('data/solubility.csv')
         print('running with no Kfold')
@@ -110,8 +108,6 @@ def main():
             model = simpleAE(input_dim, model_name=model_name).to(device)
         elif model_name == "labbGNN":
             model = labbGNN(input_dim, model_name=model_name).to(device)
-        elif model_name == "binGNN":
-            model = binGNN(input_dim, model_name=model_name).to(device)
         print(f'model: {model_name}')
         optimizer = optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=sched_size, gamma=gamma)
@@ -121,8 +117,9 @@ def main():
         df = pd.DataFrame(train_losses, columns=['train_losses'])
         df['validation_losses'] = val_losses
         df.to_csv(f'output/{model_name}.csv', sep=';')
-        model.plot_history(train_losses, val_losses)
-        model.print_eval()
+        # model.plot_history(train_losses, val_losses)
+        # model.print_eval()
+        _ = model.make_embedding()  
 
 def load_config():
     if not os.path.exists("config.json"):
@@ -132,14 +129,14 @@ def load_config():
     
 def create_default_config():
     default_config = {
-        "name": "modelAE",
-        "loss": "BCE",
+        "name": "simpleAE",
+        "loss": "MSE",
         "dataset": "/scratch/project_2008672/images/",
         "num_epochs": 500,
         "batch_size": 32,
-        "use_kfold": True,
+        "use_kfold": False,
         "learning_rate": 0.001,
-        "weight_decay": 0.0001,
+        "weight_decay": 0,
         "gamma": 1.0,
         "y_name": "self",
         "_Comment Key DO NOT USE": "Specify targets for training. Self for AE. set1 for AE+labels",
