@@ -109,7 +109,7 @@ class customDataset(Dataset):
             slide_pattern = row['Slide'] + '*roi{:03d}*'.format(row['ROI number'])
             imgpaths = list(Path(img_path).glob(slide_pattern))
             imgpaths.sort()
-            self.all_files.append(imgpaths)elf.all_files.append(imgpaths)
+            self.all_files.append(imgpaths)
 
         self.channels = [f"c{i}" for i in range(1, 7)]  # c1 to c6
 
