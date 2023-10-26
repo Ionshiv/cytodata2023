@@ -130,9 +130,12 @@ class customDataset(Dataset):
             images.append(image)
 
         # Stack along new dimension to create a single tensor for the multi-channel image
-        multi_channel_img = tch.stack(images)  # [C, 4, N, M]
-        multi_channel_img = multi_channel_img.permute(1, 0, 2, 3)  # [4, C, N, M]
+        multi_channel_img = tch.stack(images) # [C, 4, N, M]
+        print(f'line 133 {multi_channel_img.shape}')  
+        multi_channel_img = tch.permute(multi_channel_img, (1, 0, 2, 3))  # [4, C, N, M]  # [4, C, N, M]
+        print(f'line 134 {multi_channel_img.shape}') 
         multi_channel_img = tch.squeeze(multi_channel_img, 2)
+        print(f'line 135 {multi_channel_img.shape}') 
         
         return multi_channel_img.to(tch.float32)
 
