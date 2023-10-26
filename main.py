@@ -101,8 +101,8 @@ def main():
         elif loss_type == "BCE":
             criterion = nn.BCELoss()
         print(f'criterion {criterion}')
-        t_loader = DataLoader(data_train, batch_size=8, shuffle=True)
-        v_loader = DataLoader(data_test, batch_size=8, shuffle=True)
+        t_loader = DataLoader(data_train, batch_size=1, shuffle=True)
+        v_loader = DataLoader(data_test, batch_size=1, shuffle=True)
         print('loaders done')
         if model_name == "simpleAE":
             model = simpleAE(input_dim, model_name=model_name).to(device)
