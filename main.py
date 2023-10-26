@@ -131,13 +131,12 @@ def create_default_config():
     default_config = {
         "name": "simpleAE",
         "loss": "MSE",
-        "datapath": "/scratch/project_2008672/images/",
+        "datapath": "/scratch/project_2008672/",
         "num_epochs": 500,
         "batch_size": 32,
         "use_kfold": False,
         "learning_rate": 0.001,
         "weight_decay": 0,
-        "gamma": 1.0,
         "y_name": "self",
         "_Comment Key DO NOT USE": "Specify targets for training. Self for AE. set1 for AE+labels",
     }
