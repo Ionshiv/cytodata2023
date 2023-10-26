@@ -189,6 +189,7 @@ class simpleAE(nn.Module):
                 enc_outputs = self.encoder(data)
                 # Take just the last output tensor from the list of encoder outputs
                 final_output = enc_outputs[-1].cpu().numpy()
+                final_output = final_output.reshape(-1)
                 embeddings.append(final_output)
 
         embeddings = np.vstack(embeddings)
