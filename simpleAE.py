@@ -6,7 +6,6 @@ import torch.nn as nn
 import torch.optim as optim
 
 # External Helper libraries
-from torchsummary import summary as asummary
 import random
 import numpy as np
 import matplotlib.pyplot as plt
