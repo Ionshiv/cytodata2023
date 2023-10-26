@@ -135,7 +135,7 @@ class simpleAE(nn.Module):
             train_loss_items = []
             for batch in t_loader:
                 img = batch.to(self.device)
-                img = tch.squeeze(img, 2)
+                img = tch.squeeze(img)
                 optimizer.zero_grad()
                 # Forward pass
                 outputs = self(img)
@@ -160,7 +160,7 @@ class simpleAE(nn.Module):
             with tch.no_grad():
                 for val_batch in v_loader:
                     val_img = val_batch.to(self.device)
-                    val_img = tch.squeeze(val_img, 2)
+                    val_img = tch.squeeze(val_img)
                     val_outputs = self(val_img)
                     val_loss = criterion(val_outputs, val_img)
                     val_loss_items.append(val_loss.item())
@@ -185,7 +185,7 @@ class simpleAE(nn.Module):
         with tch.no_grad():  # No need to calculate gradients
             for batch in data_loader:
                 data = batch.to(self.device)
-                data = tch.squeeze(data, 2)
+                data = tch.squeeze(data)
                 enc_outputs = self.encoder(data)
                 # Take just the last output tensor from the list of encoder outputs
                 final_output = enc_outputs[-1].cpu().numpy()
