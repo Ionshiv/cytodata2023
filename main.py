@@ -43,7 +43,7 @@ def main():
 
     # Initialize Custom Dataset
     # img_dir = 'data/'
-    data_custom = customDataset(img_dir)
+    data_custom = customDataset(img_dir, 'cytodata2023_hackathon_train.csv')
     if use_kfold:
         print('running with Kfold')
         k_folds = 5
@@ -101,8 +101,8 @@ def main():
         elif loss_type == "BCE":
             criterion = nn.BCELoss()
         print(f'criterion {criterion}')
-        t_loader = DataLoader(data_train, batch_size=1, shuffle=True)
-        v_loader = DataLoader(data_test, batch_size=1, shuffle=True)
+        t_loader = DataLoader(data_train, batch_size=8, shuffle=True)
+        v_loader = DataLoader(data_test, batch_size=8, shuffle=True)
         print('loaders done')
         if model_name == "simpleAE":
             model = simpleAE(input_dim, model_name=model_name).to(device)
@@ -119,7 +119,10 @@ def main():
         df.to_csv(f'output/{model_name}.csv', sep=';')
         # model.plot_history(train_losses, val_losses)
         # model.print_eval()
-        _ = model.make_embedding()  
+        _ = model.make_embedding()
+        data_embedding = customDataset(img_dir, 'cytodata2023_hackathon_test.csv')
+        e_loader = DataLoader(data_train, batch_size=8, shuffle=True)
+        _ = model.make_embedding(e_loader)  
 
 def load_config():
     if not os.path.exists("config.json"):

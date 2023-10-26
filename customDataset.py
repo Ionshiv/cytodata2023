@@ -92,13 +92,13 @@ def generate_cropped_images(image, crop_size, translation_parameter):
 
 
 class customDataset(Dataset):
-    def __init__(self, root_dir):
+    def __init__(self, root_dir, metafile):
         self.root_dir = root_dir
 
         # Define the root path and img_path (you need to define img_path first)
         meta_path = os.path.join(self.root_dir, 'metadata')
         img_path = os.path.join(self.root_dir, 'images')
-        trainmeta_path = os.path.join(meta_path, 'cytodata2023_hackathon_train.csv')
+        trainmeta_path = os.path.join(meta_path, metafile)
         df_metadata_train = pd.read_csv(trainmeta_path)
 
         # Create an empty list to store the paths
@@ -131,11 +131,11 @@ class customDataset(Dataset):
 
         # Stack along new dimension to create a single tensor for the multi-channel image
         multi_channel_img = tch.stack(images) # [C, 4, N, M]
-        print(f'line 133 {multi_channel_img.shape}')  
+        # print(f'line 133 {multi_channel_img.shape}')  
         multi_channel_img = tch.permute(multi_channel_img, (2, 0, 1, 3))  # [4, C, N, M]  # [4, C, N, M]  # [4, C, N, M]
-        print(f'line 134 {multi_channel_img.shape}') 
+        # print(f'line 134 {multi_channel_img.shape}') 
         multi_channel_img = tch.squeeze(multi_channel_img, 2)
-        print(f'line 135 {multi_channel_img.shape}') 
+        # print(f'line 135 {multi_channel_img.shape}') 
         
         return multi_channel_img.to(tch.float32)
 

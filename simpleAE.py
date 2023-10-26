@@ -92,37 +92,7 @@ class simpleAE(nn.Module):
         enc_outputs = self.encoder(x)
         dec_output = self.decoder(enc_outputs[-1], enc_outputs[:-1])
         return dec_output
-    # def __init__(self, input_dim, model_name='default', device=None):
-    #     super(simpleAE, self).__init__()
-    #     self.model_name = model_name
-    #     print('model init')
-    #     if device:
-    #         self.device = device
-    #     else:
-    #         self.device = tch.device("cuda" if tch.cuda.is_available() else "cpu")
-    #     self.apply(self.weights_init)
-    #     # Encoder
-    #     self.enc_conv1 = nn.Conv2d(input_dim, 64, kernel_size=3, stride=1, padding=1)
-    #     self.enc_conv2 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)
-
-    #     # Decoder
-    #     self.dec_conv1 = nn.Conv2d(128, 64, kernel_size=3, stride=1, padding=1)
-    #     self.dec_conv2 = nn.Conv2d(64, input_dim, kernel_size=3, stride=1, padding=1)
-
-    #     self.relu = nn.ReLU()
-    #     self.sigmoid = nn.Sigmoid()
-
-    # def forward(self, x):
-    #     # Encoder
-    #     print('forward')
-    #     x1 = self.relu(self.enc_conv1(x))
-    #     x2 = self.relu(self.enc_conv2(x1))
-
-    #     # Decoder with skip-connection
-    #     y = self.relu(self.dec_conv1(x2) + x1)
-    #     y = self.sigmoid(self.dec_conv2(y))
-        
-    #     return y
+  
 
 
     def fitAE(self, t_loader, v_loader, num_epochs, optimizer, criterion, scheduler):
@@ -180,8 +150,10 @@ class simpleAE(nn.Module):
         embeddings = []
         if data_loader:
             print('full_loader')
+            lname = 'external_'
         else:
             data_loader = self.t_loader
+            lname = 'training_data_'
         with tch.no_grad():  # No need to calculate gradients
             for batch in data_loader:
                 data = batch.to(self.device)
@@ -193,7 +165,7 @@ class simpleAE(nn.Module):
                 embeddings.append(final_output)
 
         embeddings = np.vstack(embeddings)
-        np.save('encoder_embeddings.npy', embeddings)
+        np.save(f'{lname}encoder_embeddings.npy', embeddings)
         return embeddings
 
     def print_eval(self, fold=0):
