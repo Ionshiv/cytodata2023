@@ -120,7 +120,8 @@ class customDataset(Dataset):
         images = []
         for j, _ in enumerate(self.channels):
             img_name = self.all_files[idx][j]
-            image = Image.open(img_name)
+            # image = Image.open(img_name)
+            image = np.array(Image.open(img_name))
             # [N, M]
             image = log_scale_and_normalize(image, quantile=True)
             image = generate_cropped_images(image, CROP_SIZE, TRANSLATION_PARAMETER)
