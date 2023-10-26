@@ -5,6 +5,8 @@ from torchvision import transforms
 from PIL import Image
 from torch.utils.data import Dataset
 import numpy as np
+import pandas as pd
+from pathlib import Path
 
 
 CROP_SIZE = 1024  # Adjust the crop size as needed
@@ -92,22 +94,32 @@ def generate_cropped_images(image, crop_size, translation_parameter):
 class customDataset(Dataset):
     def __init__(self, root_dir):
         self.root_dir = root_dir
-        self.all_files = glob(os.path.join(root_dir, 'unit*_c*.png'))
-        
-        # Extract unique unit IDs
-        self.unit_ids = list(set(f.split('_')[0] for f in [os.path.basename(x) for x in self.all_files]))
-        self.unit_ids.sort()  # sort them if needed
-        
+
+        # Define the root path and img_path (you need to define img_path first)
+        root_path = os.path.dirname(self.root_dir)
+        meta_path = os.path.join(root_path, 'metadata')
+        trainmeta_path = os.path.join(meta_path, 'cytodata2023_hackathon_train.csv')
+        df_metadata_train = pd.read_csv(trainmeta_path)
+
+        # Create an empty list to store the paths
+        self.all_files = []
+
+        # Iterate through the rows in df_metadata_train
+        for idx, row in df_metadata_train.iterrows():
+            slide_pattern = row['Slide'] + '*roi{:03d}*'.format(row['ROI number'])
+            imgpaths = list(self.root_dir.glob(slide_pattern))
+            imgpaths.sort()
+            self.all_files.append(imgpaths)
+
         self.channels = [f"c{i}" for i in range(1, 7)]  # c1 to c6
 
     def __len__(self):
         return len(self.unit_ids)
 
     def __getitem__(self, idx):
-        unit_id = self.unit_ids[idx]
         images = []
-        for channel in self.channels:
-            img_name = os.path.join(self.root_dir, f"{unit_id}_{channel}.png")
+        for j, _ in enumerate(self.channels):
+            img_name = self.all_files[idx][j]
             image = Image.open(img_name)
             # [N, M]
             image = log_scale_and_normalize(image, quantile=True)
