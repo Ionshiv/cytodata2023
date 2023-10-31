@@ -1,2 +1,2 @@
-### NAN removal from corrupted pixels during TIF-to-npy conversion.
-Simple data cleaning script for my own DL projects.
+### Simple Autoencoder for Cytodata2023.
+Pytorch based autoencoder for Cytodata2023. Never finished running on target data.
